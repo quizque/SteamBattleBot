@@ -5,10 +5,13 @@ Steam chat Battle Bot used to pass time
 **You will need an alt account to use this (Or just use your own and let a friend play)**
 1. Start the application and sign in
  - If you got email verification it will ask you for the code. (2SA does not work at the moment, sorry!)
+ 
 2. Open the new admim.txt folder and replace the current text with your steamID64
  - You can find your steamID64 at [steamid.io](https://steamid.io/)
+ 
 3. Send the bot account the follow command to setup/restart a new game: `!setup`
  - To send the bot account commands, simply open a chat with the bot and enter them there.
+ 
 4. Send the bot account commands. (Commands below)
 
 ### Commands
@@ -24,6 +27,7 @@ Steam chat Battle Bot used to pass time
  - Let more than one player play at a time
  - Organize files
 - Semi-Important
+ - Add to/Fix README file
  - Allow more than one admin
  - replace the `!setup` the command with a better system
  - Better file system for storing data
