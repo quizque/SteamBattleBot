@@ -39,7 +39,7 @@ namespace SteamBot
                 File.Create("admin.txt").Close();
                 File.WriteAllText("admin.txt", "76561198116385237");
             }
-            Console.Title = "Steam Bot by Nick";
+            Console.Title = "Steam Battle Bot";
             StartUpLogo();
             Console.WriteLine("Press CTRL+C to quit or send !shutdown as admin to bot");
 
@@ -176,7 +176,7 @@ namespace SteamBot
 
         static void OnChatMessage(SteamFriends.FriendMsgCallback callBack)
         {
-            //string[] args; UNCOMMECT WHEN BETTER SETUP IS ADDED!!!1!!!1!!!!!11!11!1111
+            //string[] args; UNCOMMECT WHEN BETTER SETUP IS ADDED!
             if (callBack.EntryType == EChatEntryType.ChatMsg)
             {
                 if (callBack.Message.Length > 1)
@@ -191,6 +191,15 @@ namespace SteamBot
 
                         switch (command)
                         {
+                            case "!shutdown":
+                                if (!isBotAdmin(callBack.Sender))
+                                {
+                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
+                                    break;
+                                }
+                                Environment.Exit(0);
+                                break;
+
                             case "!setup":
                                 if (!isBotAdmin(callBack.Sender))
                                 {
