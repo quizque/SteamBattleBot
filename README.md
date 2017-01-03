@@ -3,6 +3,7 @@ Steam chat Battle Bot used to pass time
 
 ### Usage
 **You will need an alt account to use this (Or just use your own and let a friend play)**
+
 1. Start the application and sign in
  - If you got email verification it will ask you for the code. (2SA does not work at the moment, sorry!)
  
