@@ -31,6 +31,8 @@ namespace SteamBattleBot
 
         static void Main(string[] args)
         {
+            bool autologin = true;
+
             SteamDirectory.Initialize();
             if (!File.Exists("chat.txt"))
             {
@@ -42,14 +44,36 @@ namespace SteamBattleBot
                 File.Create("admin.txt").Close();
                 File.WriteAllText("admin.txt", "76561198116385237");
             }
+            if (!File.Exists("creds.txt") && autologin)
+            {
+                File.Create("creds.txt").Close();
+            }
+
             Console.Title = "Steam Battle Bot";
             StartUpLogo();
             Console.WriteLine("Press CTRL+C to quit or send !shutdown as admin to bot");
 
-            Console.Write("Username: ");
-            user = Console.ReadLine();
-            Console.Write("Password: ");
-            pass = inputPass();
+            if (File.Exists("creds.txt") && autologin)
+            {
+                if (new FileInfo("creds.txt").Length != 0) {
+                    Console.WriteLine("Autologin file detected!");
+                    string[] lines = File.ReadAllLines("creds.txt");
+                    user = lines[0];
+                    pass = lines[1];
+                }
+                else
+                {
+                    Console.WriteLine("creds.txt is empty! Exiting...");
+                    Console.ReadKey();
+                    Environment.Exit(0);
+                }
+            }else
+            {
+                Console.Write("Username: ");
+                user = Console.ReadLine();
+                Console.Write("Password: ");
+                pass = inputPass();
+            }
 
             if (user == "" || pass == "")
             {
