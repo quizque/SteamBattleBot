@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Collections.Generic;
 
-namespace SteamBot
+namespace SteamBattleBot
 {
     class Program
     {
@@ -50,6 +50,13 @@ namespace SteamBot
             user = Console.ReadLine();
             Console.Write("Password: ");
             pass = inputPass();
+
+            if (user == "" || pass == "")
+            {
+                Console.WriteLine("Your username/password is blank!");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
 
             SteamLogIn();
         }
