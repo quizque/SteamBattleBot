@@ -2,6 +2,7 @@
 using SteamKit2;
 using System.IO;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace SteamBot
 {
@@ -19,6 +20,8 @@ namespace SteamBot
         static string authCode;
 
         static Random _random = new Random();
+
+        static List<UInt64> admins = new List<UInt64>();
 
         static int monsterHP;
         static int playerHP;
@@ -288,10 +291,19 @@ namespace SteamBot
         {
             try
             {
-                if (sid.ConvertToUInt64() == Convert.ToUInt64(File.ReadAllText("admin.txt")))
-                {
-                    return true;
+                string[] lines = File.ReadAllLines("admin.txt"); // Read all the SteamID64s in the file
+                admins.Clear();
+                foreach (string id in lines){
+                    admins.Add(Convert.ToUInt64(id));
                 }
+                foreach (UInt64 id in admins)
+                {
+                    if (sid.ConvertToUInt64() == id)
+                    {
+                        return true;
+                    }
+                }
+
                 steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "You are not a bot admin.");
                 Console.WriteLine(steamFriends.GetFriendPersonaName(sid) + " attempted to use an administrator command while not an administrator.");
                 return false;
@@ -312,8 +324,8 @@ namespace SteamBot
                 if (friend.Relationship == EFriendRelationship.RequestRecipient)
                 {
                     steamFriends.AddFriend(friend.SteamID);
-                    Thread.Sleep(500);
-                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am Nicks battle bot. Ask nickthegamer5 to start a battle!");
+                    Thread.Sleep(2000);
+                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am Nicks battle bot. Ask the owner to start a battle!");
                 }
             }
         }
@@ -390,7 +402,6 @@ namespace SteamBot
 
         static void StartUpLogo()
         {
-
             Console.WriteLine(@" _____ _                        ______       _    ______       _   _   _      ");
             Console.WriteLine(@"/  ___| |                       | ___ \     | |   | ___ \     | | | | | |     ");
             Console.WriteLine(@"\ `--.| |_ ___  __ _ _ __ ___   | |_/ / ___ | |_  | |_/ / __ _| |_| |_| | ___ ");
