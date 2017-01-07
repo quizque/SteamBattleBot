@@ -8,28 +8,28 @@ namespace SteamBattleBot
 {
     class Program
     {
-        static SteamClient steamClient;
-        static CallbackManager manager;
-        static SteamUser steamUser;
-        static SteamFriends steamFriends;
+        SteamClient steamClient;
+        CallbackManager manager;
+        SteamUser steamUser;
+        SteamFriends steamFriends;
 
-        static bool isRunning, isPlaying;
+        bool isRunning, isPlaying;
 
-        static string user, pass;
+        string user, pass;
 
-        static string authCode;
+        string authCode;
 
-        static Random _random = new Random();
+        Random _random = new Random();
 
-        static List<UInt64> admins = new List<UInt64>();
+        List<UInt64> admins = new List<UInt64>();
 
-        static int monsterHP;
-        static int playerHP;
-        static int dmgDonePlayer;
-        static int dmgDoneMonster;
+        int monsterHP;
+        int playerHP;
+        int dmgDonePlayer;
+        int dmgDoneMonster;
 
 
-        static void Main(string[] args)
+        void Main(string[] args)
         {
             bool autologin = true;
 
@@ -85,7 +85,7 @@ namespace SteamBattleBot
             SteamLogIn();
         }
 
-        static void SteamLogIn()
+        void SteamLogIn()
         {
             steamClient = new SteamClient();
             manager = new CallbackManager(steamClient);
@@ -119,7 +119,7 @@ namespace SteamBattleBot
             Console.ReadKey();
         }
 
-        static void OnConnected(SteamClient.ConnectedCallback callBack)
+        void OnConnected(SteamClient.ConnectedCallback callBack)
         {
             if (callBack.Result != EResult.OK)
             {
@@ -147,7 +147,7 @@ namespace SteamBattleBot
             });
         }
 
-        static void OnDisconnected(SteamClient.DisconnectedCallback callback)
+        void OnDisconnected(SteamClient.DisconnectedCallback callback)
         {
             Console.WriteLine("{0} disconnected from Steam, reconnecting in 5...", user);
 
@@ -156,7 +156,7 @@ namespace SteamBattleBot
             steamClient.Connect();
         }
 
-        static void OnLoggedOn(SteamUser.LoggedOnCallback callBack)
+        void OnLoggedOn(SteamUser.LoggedOnCallback callBack)
         {
             if (callBack.Result != EResult.OK)
             {
@@ -176,12 +176,12 @@ namespace SteamBattleBot
             Console.WriteLine("{0} succesfully logged in!", user);
         }
 
-        static void OnLoggedOff(SteamUser.LoggedOffCallback callBack)
+        void OnLoggedOff(SteamUser.LoggedOffCallback callBack)
         {
             Console.WriteLine("Logged off of Steam: {0}", callBack.Result);
         }
 
-        static void OnMachineAuth(SteamUser.UpdateMachineAuthCallback callBack)
+        void OnMachineAuth(SteamUser.UpdateMachineAuthCallback callBack)
         {
             Console.WriteLine("Updating sentry file...");
             byte[] sentryHash = CryptoHelper.SHAHash(callBack.Data);
@@ -203,12 +203,12 @@ namespace SteamBattleBot
             Console.WriteLine("Done.");
         }
 
-        static void OnAccountInfo(SteamUser.AccountInfoCallback callBack)
+        void OnAccountInfo(SteamUser.AccountInfoCallback callBack)
         {
             steamFriends.SetPersonaState(EPersonaState.Online);
         }
 
-        static void OnChatMessage(SteamFriends.FriendMsgCallback callBack)
+        void OnChatMessage(SteamFriends.FriendMsgCallback callBack)
         {
             //string[] args; UNCOMMECT WHEN BETTER SETUP IS ADDED!
             if (callBack.EntryType == EChatEntryType.ChatMsg)
@@ -308,7 +308,7 @@ namespace SteamBattleBot
             }
         }
 
-        public static void postState(SteamID sid)
+        void postState(SteamID sid)
         {
             Console.WriteLine("Currect State");
             steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "Currect state.");
@@ -318,7 +318,7 @@ namespace SteamBattleBot
             steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "Monsters HP: " + monsterHP);
         }
 
-        public static bool isBotAdmin(SteamID sid)
+        bool isBotAdmin(SteamID sid)
         {
             try
             {
@@ -346,7 +346,7 @@ namespace SteamBattleBot
             }
         }
 
-        static void OnFriendsAdded(SteamFriends.FriendsListCallback callBack)
+        void OnFriendsAdded(SteamFriends.FriendsListCallback callBack)
         {
             Thread.Sleep(2500);
 
@@ -361,7 +361,7 @@ namespace SteamBattleBot
             }
         }
 
-        public static string[] seperate(int number, char seperator, string thestring)
+        string[] seperate(int number, char seperator, string thestring)
         {
             string[] returned = new string[4];
 
@@ -400,7 +400,7 @@ namespace SteamBattleBot
             return returned;
         }
 
-        static string inputPass()
+        string inputPass()
         {
             {
                 string pass = "";
@@ -431,7 +431,7 @@ namespace SteamBattleBot
             }
         }
 
-        static void StartUpLogo()
+        void StartUpLogo()
         {
             Console.WriteLine(@" _____ _                        ______       _    ______       _   _   _      ");
             Console.WriteLine(@"/  ___| |                       | ___ \     | |   | ___ \     | | | | | |     ");
