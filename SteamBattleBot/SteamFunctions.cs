@@ -22,14 +22,15 @@ namespace SteamBattleBot
 
         Random _random = new Random();
 
-        List<ulong> admins = new List<ulong>();
+        bool logData = false;
 
         int monsterHP;
         int playerHP;
         int dmgDonePlayer;
         int dmgDoneMonster;
 
-        
+        List<Structures.PlayerStructure> players = new List<Structures.PlayerStructure>();
+        List<ulong> admins = new List<ulong>();
 
         public void SteamLogIn()
         {
@@ -182,10 +183,9 @@ namespace SteamBattleBot
 
                             #region !setup
                             case "!setup":
-                                if (!isBotAdmin(callBack.Sender))
-                                {
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !setup command!");
-                                    break;
+                                players.Add(new Structures.PlayerStructure { playerId64 = Convert.ToUInt64(callBack.Sender) });
+                                foreach (Structures.PlayerStructure id in players) {
+                                    Console.WriteLine(id.playerId64);
                                 }
                                 if (!isPlaying)
                                 {
@@ -403,6 +403,11 @@ namespace SteamBattleBot
                 }
                 return pass;
             }
+        }
+
+        void log() // WIP
+        {
+            // Add code here
         }
     }
 }

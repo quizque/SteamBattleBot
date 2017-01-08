@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SteamBattleBot.Structures
+namespace SteamBattleBot.Structures.Battles
 {
-    class BossStructure
+    class BattleStructures
     {
-
     }
 }

@@ -8,9 +8,9 @@ namespace SteamBattleBot.Structures
 {
     class PlayerStructure
     {
-        public ulong PlayerId64;
+        public ulong playerId64;
 
-        public int HealthPoints;
-        public string Class;
+        public int healthPoints;
+        public string elementClass;
     }
 }

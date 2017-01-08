@@ -10,5 +10,6 @@ namespace SteamBattleBot.Structures
     {
         public string type;
 
+        private bool isBoss;
     }
 }
