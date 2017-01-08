@@ -235,7 +235,7 @@ namespace SteamBattleBot
                             #region !help
                             case "!help":
                                 Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "The current commands are: !help !attack !setup(admin only) !shutdown(admin only");
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "The current commands are:\n!help\n!attack\n!setup(admin only)\n!shutdown(admin only)");
                                 break;
                             #endregion
                         }
