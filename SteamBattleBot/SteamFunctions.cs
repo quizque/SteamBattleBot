@@ -18,15 +18,18 @@ namespace SteamBattleBot
         public string user, pass;
 
         string authCode;
+        byte[] sentryHash;
 
         Random _random = new Random();
 
-        List<UInt64> admins = new List<UInt64>();
+        List<ulong> admins = new List<ulong>();
 
         int monsterHP;
         int playerHP;
         int dmgDonePlayer;
         int dmgDoneMonster;
+
+        
 
         public void SteamLogIn()
         {
@@ -72,8 +75,6 @@ namespace SteamBattleBot
             }
 
             Console.WriteLine("Connected to Steam! Logging in {0}...", user);
-
-            byte[] sentryHash = null;
 
             if (File.Exists("sentry.bin"))
             {
@@ -168,6 +169,7 @@ namespace SteamBattleBot
 
                         switch (command)
                         {
+                            #region !shutdown
                             case "!shutdown":
                                 if (!isBotAdmin(callBack.Sender))
                                 {
@@ -176,7 +178,9 @@ namespace SteamBattleBot
                                 }
                                 Environment.Exit(0);
                                 break;
+                            #endregion
 
+                            #region !setup
                             case "!setup":
                                 if (!isBotAdmin(callBack.Sender))
                                 {
@@ -196,7 +200,9 @@ namespace SteamBattleBot
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Done setting up!");
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Ready to play!");
                                 break;
+                            #endregion
 
+                            #region !attack
                             case "!attack":
                                 if (!isPlaying)
                                 {
@@ -212,7 +218,9 @@ namespace SteamBattleBot
                                 playerHP -= dmgDoneMonster;
                                 postState(callBack.Sender);
                                 break;
+                            #endregion
 
+                            #region !state
                             case "!state":
                                 if (!isPlaying)
                                 {
@@ -222,9 +230,19 @@ namespace SteamBattleBot
                                 Console.WriteLine("!state command recived. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
                                 postState(callBack.Sender);
                                 break;
+                            #endregion
+
+                            #region !help
+                            case "!help":
+                                Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "The current commands are: !help !attack !setup(admin only) !shutdown(admin only");
+                                break;
+                            #endregion
                         }
                     }
                 }
+
+                #region AutoReply system
                 string rLine;
                 string trimmed = callBack.Message;
                 char[] trim = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '\\', '|', ';', ':', '"', '\'', ',', '<', '.', '>', '/', '?' };
@@ -248,6 +266,7 @@ namespace SteamBattleBot
                         return;
                     }
                 }
+                #endregion
             }
         }
 
@@ -266,22 +285,33 @@ namespace SteamBattleBot
             try
             {
                 string[] lines = File.ReadAllLines("admin.txt"); // Read all the SteamID64s in the file
-                admins.Clear();
-                foreach (string id in lines)
+                admins.Clear(); // Clear the list to store the new admins
+
+                foreach (string id in lines) // Read each line in var
                 {
-                    admins.Add(Convert.ToUInt64(id));
-                }
-                foreach (UInt64 id in admins)
-                {
-                    if (sid.ConvertToUInt64() == id)
+                    try // Try to convert it
                     {
-                        return true;
+                        admins.Add(Convert.ToUInt64(id)); // Add ID to list
+                    }
+                    catch // If invalid...
+                    {
+                        Console.WriteLine("Invalid Steam64ID found in admin.txt! Skipping..."); // Tell the user
                     }
                 }
 
+                foreach (ulong id in admins) // Loop the list
+                {
+                    if (sid.ConvertToUInt64() == id) // Convert the users steamID and see if it matches...
+                    {
+                        return true; // Return true if id matched
+                    }
+                }
+
+                // If their ID was not found, tell the user
                 steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "You are not a bot admin.");
+                // And put the message in console
                 Console.WriteLine(steamFriends.GetFriendPersonaName(sid) + " attempted to use an administrator command while not an administrator.");
-                return false;
+                return false; // And finaly return false
             }
             catch (Exception e)
             {

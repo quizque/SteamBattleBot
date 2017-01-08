@@ -64,6 +64,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteamFunctions.cs" />
+    <Compile Include="Structures\BossStructure.cs" />
+    <Compile Include="Structures\EnemyStructure.cs" />
+    <Compile Include="Structures\PlayerStructure.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

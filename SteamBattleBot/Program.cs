@@ -1,8 +1,6 @@
 ﻿using System;
 using SteamKit2;
 using System.IO;
-using System.Threading;
-using System.Collections.Generic;
 
 namespace SteamBattleBot
 {
