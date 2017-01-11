@@ -21,24 +21,7 @@ Steam chat Battle Bot used to pass time
 - `!setup` - Used to setup/reset a game (Admin only command!)
 
 ### Need to do list
-- Important
- - Add help command
- - Add 2SA support
- - Put in better argument system
- - Let more than one player play at a time
- - Organize files
-- Semi-Important
- - Add to/Fix README file
- - Allow more than one admin
- - replace the `!setup` the command with a better system
- - Better file system for storing data
- - Allow multiplayer
-- Ideas
- - Add more account based commands (Change username, friend user, etc)
- - Add more games
- - Move usage to the wiki
- - Change console to GUI
-
+- Check out the projects!
 ### Libarys used
 - [Fody.Costura](https://github.com/Fody/Costura)
 - [SteamKit2](https://github.com/SteamRE/SteamKit)
