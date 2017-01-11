@@ -8,9 +8,18 @@ namespace SteamBattleBot.Structures
 {
     class PlayerStructure
     {
-        public ulong playerId64;
+        private Random _random = new Random();
+
+        public ulong id;
 
         public int healthPoints;
-        public string elementClass;
+
+        private Structures.EnemyStructure enemy = new Structures.EnemyStructure();
+
+        public void setupGame()
+        {
+            enemy.hp = _random.Next(90, 120);
+            healthPoints = 100;
+        }
     }
 }

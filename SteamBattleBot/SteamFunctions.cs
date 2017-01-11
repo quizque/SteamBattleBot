@@ -22,8 +22,6 @@ namespace SteamBattleBot
 
         Random _random = new Random();
 
-        bool logData = false;
-
         int monsterHP;
         int playerHP;
         int dmgDonePlayer;
@@ -183,23 +181,30 @@ namespace SteamBattleBot
 
                             #region !setup
                             case "!setup":
-                                players.Add(new Structures.PlayerStructure { playerId64 = Convert.ToUInt64(callBack.Sender) });
-                                foreach (Structures.PlayerStructure id in players) {
-                                    Console.WriteLine(id.playerId64);
+
+                                if (players.Count == 0)
+                                    players.Add(new Structures.PlayerStructure { id = Convert.ToUInt64(callBack.Sender) });
+
+                                for (var i = 0; i < players.Count; i++) {
+
+                                    if (players[i].id == callBack.Sender)
+                                    {
+                                        Console.WriteLine("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
+                                        steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Nope...");
+                                        return;
+                                    }
+                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
+
+                                    players.Add(new Structures.PlayerStructure { id = Convert.ToUInt64(callBack.Sender) });
+
+                                    players[i].setupGame();
+
+                                    Console.WriteLine(players[i].id);
+
                                 }
-                                if (!isPlaying)
-                                {
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "A game is already setup!");
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Resetting...");
-                                }
-                                Console.WriteLine("!setup command recived. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up game...");
-                                monsterHP = _random.Next(50, 150);
-                                playerHP = 100;
-                                isPlaying = true;
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Done setting up!");
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Ready to play!");
+
                                 break;
+
                             #endregion
 
                             #region !attack
@@ -241,32 +246,6 @@ namespace SteamBattleBot
                         }
                     }
                 }
-
-                #region AutoReply system
-                string rLine;
-                string trimmed = callBack.Message;
-                char[] trim = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '\\', '|', ';', ':', '"', '\'', ',', '<', '.', '>', '/', '?' };
-
-                for (int i = 0; i < 30; i++)
-                {
-                    trimmed = trimmed.Replace(trim[i].ToString(), "");
-                }
-
-                StreamReader sReader = new StreamReader("chat.txt");
-
-                while ((rLine = sReader.ReadLine()) != null)
-                {
-                    string text = rLine.Remove(rLine.IndexOf('|') - 1);
-                    string response = rLine.Remove(0, rLine.IndexOf('|') + 2);
-
-                    if (callBack.Message.ToLower().Contains(text))
-                    {
-                        steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, response);
-                        sReader.Close();
-                        return;
-                    }
-                }
-                #endregion
             }
         }
 

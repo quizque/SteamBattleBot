@@ -13,11 +13,6 @@ namespace SteamBattleBot
             bool autologin = true;
 
             SteamDirectory.Initialize();
-            if (!File.Exists("chat.txt"))
-            {
-                File.Create("chat.txt").Close();
-                File.WriteAllText("chat.txt", "abc | 123");
-            }
             if (!File.Exists("admin.txt"))
             {
                 File.Create("admin.txt").Close();

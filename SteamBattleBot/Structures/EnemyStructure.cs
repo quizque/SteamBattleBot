@@ -8,8 +8,6 @@ namespace SteamBattleBot.Structures
 {
     class EnemyStructure
     {
-        public string type;
-
-        private bool isBoss;
+        public int hp;
     }
 }
