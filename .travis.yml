@@ -1,2 +1,3 @@
+before_script: cd SteamBattleBot
 language: csharp
-solution: SteamBattleBot/SteamBattleBot.sln
+solution: SteamBattleBot.sln
