@@ -2,6 +2,7 @@
 using SteamKit2;
 using System.IO;
 using System.Threading;
+using System.Security.Cryptography;
 using System.Collections.Generic;
 
 namespace SteamBattleBot
@@ -17,7 +18,7 @@ namespace SteamBattleBot
 
         public string user, pass;
 
-        string authCode;
+        string authCode, twoFactorAuth;
         byte[] sentryHash;
 
         Random _random = new Random();
@@ -86,6 +87,7 @@ namespace SteamBattleBot
                 Username = user,
                 Password = pass,
                 AuthCode = authCode,
+                TwoFactorCode = twoFactorAuth,
                 SentryFileHash = sentryHash,
             });
         }
@@ -101,22 +103,33 @@ namespace SteamBattleBot
 
         void OnLoggedOn(SteamUser.LoggedOnCallback callBack)
         {
-            if (callBack.Result != EResult.OK)
+            bool isSteamGuard = callBack.Result == EResult.AccountLogonDenied;
+            bool is2FA = callBack.Result == EResult.AccountLoginDeniedNeedTwoFactor;
+            if (isSteamGuard || is2FA)
             {
-                if (callBack.Result == EResult.AccountLogonDenied)
-                {
-                    Console.WriteLine("Unable to logon to Steam: This account is SteamGuard protected.");
+                Console.WriteLine("This account is SteamGuard protected!");
 
+                if (is2FA)
+                {
+                    Console.Write("Please enter your 2 factor auth code from your authenticator app: ");
+                    twoFactorAuth = Console.ReadLine();
+                }
+                else
+                {
                     Console.Write("Please enter the auth code sent to the email at {0}: ", callBack.EmailDomain);
                     authCode = Console.ReadLine();
-                    return;
                 }
-
+                return;
+            }
+            if (callBack.Result != EResult.OK)
+            {
                 Console.WriteLine("Unable to logon to Steam: {0} / {1}", callBack.Result, callBack.ExtendedResult);
+
                 isRunning = false;
                 return;
             }
-            Console.WriteLine("{0} succesfully logged in!", user);
+
+            Console.WriteLine("Successfully logged on!");
         }
 
         void OnLoggedOff(SteamUser.LoggedOffCallback callBack)
@@ -127,19 +140,37 @@ namespace SteamBattleBot
         void OnMachineAuth(SteamUser.UpdateMachineAuthCallback callBack)
         {
             Console.WriteLine("Updating sentry file...");
-            byte[] sentryHash = CryptoHelper.SHAHash(callBack.Data);
-            File.WriteAllBytes("sentry.bin", callBack.Data);
+            int fileSize;
+            byte[] sentryHash;
+
+            using (var fs = File.Open("sentry.bin", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                fs.Seek(callBack.Offset, SeekOrigin.Begin);
+                fs.Write(callBack.Data, 0, callBack.BytesToWrite);
+                fileSize = (int)fs.Length;
+
+                fs.Seek(0, SeekOrigin.Begin);
+                using (var sha = new SHA1CryptoServiceProvider())
+                {
+                    sentryHash = sha.ComputeHash(fs);
+                }
+            }
 
             steamUser.SendMachineAuthResponse(new SteamUser.MachineAuthDetails
             {
                 JobID = callBack.JobID,
+
                 FileName = callBack.FileName,
+
                 BytesWritten = callBack.BytesToWrite,
-                FileSize = callBack.Data.Length,
+                FileSize = fileSize,
                 Offset = callBack.Offset,
+
                 Result = EResult.OK,
                 LastError = 0,
+
                 OneTimePassword = callBack.OneTimePassword,
+
                 SentryFileHash = sentryHash,
             });
 
