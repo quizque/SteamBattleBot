@@ -1,3 +1,0 @@
-before_install: cd SteamBattleBot
-language: csharp
-solution: SteamBattleBot.sln
