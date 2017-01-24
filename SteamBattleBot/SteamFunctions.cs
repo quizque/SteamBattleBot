@@ -14,19 +14,16 @@ namespace SteamBattleBot
         SteamUser steamUser;
         SteamFriends steamFriends;
 
-        bool isRunning, isPlaying;
+        bool isRunning;
 
         public string user, pass;
 
         string authCode, twoFactorAuth;
         byte[] sentryHash;
 
-        Random _random = new Random();
+        int playerCount = 0;
 
-        int monsterHP;
-        int playerHP;
-        int dmgDonePlayer;
-        int dmgDoneMonster;
+        Random _random = new Random();
 
         List<Structures.PlayerStructure> players = new List<Structures.PlayerStructure>();
         List<ulong> admins = new List<ulong>();
@@ -53,6 +50,8 @@ namespace SteamBattleBot
             manager.Subscribe<SteamUser.UpdateMachineAuthCallback>(OnMachineAuth);
 
             isRunning = true;
+
+            players.Add(new Structures.PlayerStructure { id = 00000000000000000 });
 
             Console.WriteLine("Connecting to Steam...");
 
@@ -212,26 +211,28 @@ namespace SteamBattleBot
 
                             #region !setup
                             case "!setup":
+                                playerCount = players.Count;
+                                for (var i = 0; i < playerCount; i++) {
 
-                                if (players.Count == 0)
-                                    players.Add(new Structures.PlayerStructure { id = Convert.ToUInt64(callBack.Sender) });
-
-                                for (var i = 0; i < players.Count; i++) {
-
-                                    if (players[i].id == callBack.Sender)
+                                    if (players[i].id == callBack.Sender.AccountID)
                                     {
                                         Console.WriteLine("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                                        steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Nope...");
+                                        steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "ID already found in list; ignoreing command...");
                                         return;
                                     }
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
+                                }
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
 
-                                    players.Add(new Structures.PlayerStructure { id = Convert.ToUInt64(callBack.Sender) });
+                                players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
 
-                                    players[i].setupGame();
+                                for (var i = 0; i < players.Count; i++)
+                                {
+                                    if (callBack.Sender.AccountID == players[i].id)
+                                    {
+                                        players[i].setupGame();
 
-                                    Console.WriteLine(players[i].id);
-
+                                        Console.WriteLine(players[i].id);
+                                    }
                                 }
 
                                 break;
@@ -240,31 +241,25 @@ namespace SteamBattleBot
 
                             #region !attack
                             case "!attack":
-                                if (!isPlaying)
+                                foreach (Structures.PlayerStructure player in players) // Loop the list
                                 {
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "There is no currect game!");
-                                    break;
+                                    if (player.id == callBack.Sender.AccountID)
+                                    {
+                                        player.attack(callBack, steamFriends);
+                                    }
                                 }
-                                Console.WriteLine("!attack command recived. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
-                                dmgDonePlayer = _random.Next(5, 25);
-                                dmgDoneMonster = _random.Next(5, 15);
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "You did " + dmgDonePlayer + " to the monster!");
-                                monsterHP -= dmgDonePlayer;
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "The monster did " + dmgDoneMonster + " to you!");
-                                playerHP -= dmgDoneMonster;
-                                postState(callBack.Sender);
                                 break;
                             #endregion
 
                             #region !state
                             case "!state":
-                                if (!isPlaying)
+                                foreach (Structures.PlayerStructure player in players) // Loop the list
                                 {
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "There is no currect game!");
-                                    break;
+                                    if (player.id == callBack.Sender.AccountID)
+                                    {
+                                        player.state(callBack, steamFriends);
+                                    }
                                 }
-                                Console.WriteLine("!state command recived. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
-                                postState(callBack.Sender);
                                 break;
                             #endregion
 
@@ -278,16 +273,6 @@ namespace SteamBattleBot
                     }
                 }
             }
-        }
-
-        void postState(SteamID sid)
-        {
-            Console.WriteLine("Currect State");
-            steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "Currect state.");
-            Console.WriteLine("Player HP: " + playerHP);
-            steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "Your HP: " + playerHP);
-            Console.WriteLine("Monster HP: " + monsterHP);
-            steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "Monsters HP: " + monsterHP);
         }
 
         bool isBotAdmin(SteamID sid)

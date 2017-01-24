@@ -64,7 +64,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteamFunctions.cs" />
-    <Compile Include="Structures\BattleStructures.cs" />
     <Compile Include="Structures\EnemyStructure.cs" />
     <Compile Include="Structures\PlayerStructure.cs" />
   </ItemGroup>
