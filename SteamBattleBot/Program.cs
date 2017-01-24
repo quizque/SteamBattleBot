@@ -18,10 +18,6 @@ namespace SteamBattleBot
                 File.Create("admin.txt").Close();
                 File.WriteAllText("admin.txt", "76561198116385237");
             }
-            if (!File.Exists("creds.txt") && autologin)
-            {
-                File.Create("creds.txt").Close();
-            }
 
             Console.Title = "Steam Battle Bot";
 

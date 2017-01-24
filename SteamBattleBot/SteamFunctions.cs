@@ -230,8 +230,6 @@ namespace SteamBattleBot
                                     if (callBack.Sender.AccountID == players[i].id)
                                     {
                                         players[i].setupGame();
-
-                                        Console.WriteLine(players[i].id);
                                     }
                                 }
 
