@@ -12,7 +12,7 @@ namespace SteamBattleBot.Structures
 
         public ulong id;
 
-        public int healthPoints;
+        public int hp;
 
         private int hitChance, damageDone;
 
@@ -21,9 +21,9 @@ namespace SteamBattleBot.Structures
         public void setupGame()
         {
             enemy.hp = 100;
-            healthPoints = 100;
+            hp = 100;
         }
-
+        
         public void attack(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             hitChance = _random.Next(1, 3);
@@ -45,7 +45,7 @@ namespace SteamBattleBot.Structures
             else
             {
                 damageDone = _random.Next(1, 10); // How much damage did the monster do
-                healthPoints -= damageDone;
+                hp -= damageDone;
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The monster hit you for {0} damage!", damageDone));
             }
             state(callback, steamFriends);
@@ -53,8 +53,7 @@ namespace SteamBattleBot.Structures
 
         public void state(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
-            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} hp", healthPoints));
-            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The monster has {0} hp", enemy.hp));
+            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\n\nYou:\nHP: {0}\n\nMonster:\nHP: {1}", hp, enemy.hp));
         }
     }
 }
