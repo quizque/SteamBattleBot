@@ -323,7 +323,7 @@ namespace SteamBattleBot
                 {
                     steamFriends.AddFriend(friend.SteamID);
                     Thread.Sleep(2000);
-                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am Nicks battle bot. Ask the owner to start a battle!");
+                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am Battle Bot. Ask the owner to start a battle!");
                 }
             }
         }
