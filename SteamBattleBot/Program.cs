@@ -15,12 +15,12 @@ namespace SteamBattleBot
             // Setup console display
             #region Console Display Setup
             Console.Title = "Steam Battle Bot";
-            Console.WriteLine(@" _____ _                        ______       _    ______       _   _   _      "
-                             +@"/  ___| |                       | ___ \     | |   | ___ \     | | | | | |     "
-                             +@"\ `--.| |_ ___  __ _ _ __ ___   | |_/ / ___ | |_  | |_/ / __ _| |_| |_| | ___ "
-                             +@" `--. | __/ _ \/ _` | '_ ` _ \  | ___ \/ _ \| __| | ___ \/ _` | __| __| |/ _ \"
-                             +@"/\__/ | ||  __| (_| | | | | | | | |_/ | (_) | |_  | |_/ | (_| | |_| |_| |  __/"
-                             +@"\____/ \__\___|\__,_|_| |_| |_| \____/ \___/ \__| \____/ \__,_|\__|\__|_|\___|");
+            Console.WriteLine(@" _____ _                        ______       _    ______       _   _   _      " + Environment.NewLine
+                            + @"/  ___| |                       | ___ \     | |   | ___ \     | | | | | |     " + Environment.NewLine
+                            + @"\ `--.| |_ ___  __ _ _ __ ___   | |_/ / ___ | |_  | |_/ / __ _| |_| |_| | ___ " + Environment.NewLine
+                            + @" `--. | __/ _ \/ _` | '_ ` _ \  | ___ \/ _ \| __| | ___ \/ _` | __| __| |/ _ \" + Environment.NewLine
+                            + @"/\__/ | ||  __| (_| | | | | | | | |_/ | (_) | |_  | |_/ | (_| | |_| |_| |  __/" + Environment.NewLine
+                            + @"\____/ \__\___|\__,_|_| |_| |_| \____/ \___/ \__| \____/ \__,_|\__|\__|_|\___|");
             Console.WriteLine("Press CTRL+C to quit or send !shutdown as admin to bot");
             #endregion
 
