@@ -186,88 +186,85 @@ namespace SteamBattleBot
             //string[] args; UNCOMMECT WHEN BETTER SETUP IS ADDED!
             if (callBack.EntryType == EChatEntryType.ChatMsg)
             {
-                if (callBack.Message.Length > 1)
+                if (callBack.Message.Length > 1 && callBack.Message.Remove(1) == "!")
                 {
-                    if (callBack.Message.Remove(1) == "!")
+                    string command = callBack.Message;
+                    if (callBack.Message.Contains(" "))
                     {
-                        string command = callBack.Message;
-                        if (callBack.Message.Contains(" "))
-                        {
-                            command = callBack.Message.Remove(callBack.Message.IndexOf(" "));
-                        }
+                        command = callBack.Message.Remove(callBack.Message.IndexOf(" "));
+                    }
 
-                        switch (command)
-                        {
-                            #region !shutdown
-                            case "!shutdown":
-                                if (!isBotAdmin(callBack.Sender))
+                    switch (command)
+                    {
+                        #region !shutdown
+                        case "!shutdown":
+                            if (!isBotAdmin(callBack.Sender))
+                            {
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
+                                break;
+                            }
+                            Environment.Exit(0);
+                            break;
+                        #endregion
+
+                        #region !setup
+                        case "!setup":
+                            playerCount = players.Count;
+                            for (var i = 0; i < playerCount; i++) {
+
+                                if (players[i].id == callBack.Sender.AccountID)
                                 {
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
-                                    break;
+                                    Console.WriteLine("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
+                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "ID already found in list; ignoreing command...");
+                                    return;
                                 }
-                                Environment.Exit(0);
-                                break;
-                            #endregion
+                            }
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
 
-                            #region !setup
-                            case "!setup":
-                                playerCount = players.Count;
-                                for (var i = 0; i < playerCount; i++) {
+                            players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
 
-                                    if (players[i].id == callBack.Sender.AccountID)
-                                    {
-                                        Console.WriteLine("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                                        steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "ID already found in list; ignoreing command...");
-                                        return;
-                                    }
-                                }
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
-
-                                players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
-
-                                for (var i = 0; i < players.Count; i++)
+                            for (var i = 0; i < players.Count; i++)
+                            {
+                                if (callBack.Sender.AccountID == players[i].id)
                                 {
-                                    if (callBack.Sender.AccountID == players[i].id)
-                                    {
-                                        players[i].setupGame();
-                                    }
+                                    players[i].setupGame();
                                 }
+                            }
 
-                                break;
+                            break;
 
-                            #endregion
+                        #endregion
 
-                            #region !attack
-                            case "!attack":
-                                foreach (Structures.PlayerStructure player in players) // Loop the list
+                        #region !attack
+                        case "!attack":
+                            foreach (Structures.PlayerStructure player in players) // Loop the list
+                            {
+                                if (player.id == callBack.Sender.AccountID)
                                 {
-                                    if (player.id == callBack.Sender.AccountID)
-                                    {
-                                        player.attack(callBack, steamFriends);
-                                    }
+                                    player.attack(callBack, steamFriends);
                                 }
-                                break;
-                            #endregion
+                            }
+                            break;
+                        #endregion
 
-                            #region !state
-                            case "!state":
-                                foreach (Structures.PlayerStructure player in players) // Loop the list
+                        #region !state
+                        case "!state":
+                            foreach (Structures.PlayerStructure player in players) // Loop the list
+                            {
+                                if (player.id == callBack.Sender.AccountID)
                                 {
-                                    if (player.id == callBack.Sender.AccountID)
-                                    {
-                                        player.state(callBack, steamFriends);
-                                    }
+                                    player.state(callBack, steamFriends);
                                 }
-                                break;
-                            #endregion
+                            }
+                            break;
+                        #endregion
 
-                            #region !help
-                            case "!help":
-                                Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "The current commands are:\n!help\n!attack\n!setup\n!shutdown(admin only)");
-                                break;
-                            #endregion
-                        }
+                        #region !help
+                        case "!help":
+                            Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "The current commands are:\n!help\n!attack\n!setup\n!shutdown(admin only)");
+                            break;
+                        #endregion
                     }
                 }
             }
