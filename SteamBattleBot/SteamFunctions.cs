@@ -259,6 +259,19 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
+                        #region !reset
+                        case "!reset":
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Resetting stats back to 100...");
+                            foreach (Structures.PlayerStructure player in players) // Loop the list
+                            {
+                                if (player.id == callBack.Sender.AccountID)
+                                {
+                                    player.setupGame();
+                                }
+                            }
+                            break;
+                        #endregion
+
                         #region !help
                         case "!help":
                             Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));

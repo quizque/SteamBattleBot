@@ -24,6 +24,7 @@ Command | Action
 `!setup` | Used to setup/reset a game
 `!shutdown` | Used to shutdown the bot (Admin only)
 `!help` | Display commands
+`!reset` | Reset the game
 
 ### Features
 - Auto login (Currently unsecure, mostly just for testing)
