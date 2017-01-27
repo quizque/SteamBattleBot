@@ -5,7 +5,7 @@ Steam chat game Bot used to pass time
 **You will need an alt account to use this (Or just use your own and let a friend play)**
 
 1. Start the application and sign in
-  - If you got email verification it will ask you for the code. (2SA does not work at the moment, sorry!)
+  - If you got email verification it will ask you for the code.
  
 2. Open the new admim.txt folder and replace the current text with your steamID64
   - You can find your steamID64 at [steamid.io](https://steamid.io/)
@@ -19,9 +19,9 @@ Steam chat game Bot used to pass time
 ### Commands
 Command | Action
 ------------ | -------------
+`!setup` | Used to setup/reset a game
 `!attack` | Used to attack the "monster".
 `!state` | Used to view yours and the monsters state.
-`!setup` | Used to setup/reset a game
 `!shutdown` | Used to shutdown the bot (Admin only)
 `!help` | Display commands
 `!reset` | Reset the game
