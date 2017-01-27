@@ -8,6 +8,16 @@ namespace SteamBattleBot.Structures
 {
     class EnemyStructure
     {
+        private Random _random = new Random();
+
         public int hp;
+
+        public int coins;
+
+        public void Reset()
+        {
+            hp = _random.Next(10, 30);
+            coins = _random.Next(1, 5);
+        }
     }
 }
