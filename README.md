@@ -35,3 +35,5 @@ Command | Action
 ### Libarys used
 - [Fody.Costura](https://github.com/Fody/Costura) for packaging the DLLs
 - [SteamKit2](https://github.com/SteamRE/SteamKit) for handling steam requests
+
+This project is licensed under the terms of the MIT license.
