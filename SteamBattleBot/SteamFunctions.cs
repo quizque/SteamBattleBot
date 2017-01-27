@@ -395,10 +395,5 @@ namespace SteamBattleBot
                 return pass;
             }
         }
-
-        void log() // WIP
-        {
-            // Add code here
-        }
     }
 }
