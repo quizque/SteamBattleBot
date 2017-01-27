@@ -215,7 +215,8 @@ namespace SteamBattleBot
                                 if (players[i].id == callBack.Sender.AccountID)
                                 {
                                     Console.WriteLine("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "ID already found in list; ignoreing command...");
+                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Resetting game...");
+                                    players[i].setupGame();
                                     return;
                                 }
                             }
@@ -254,19 +255,6 @@ namespace SteamBattleBot
                                 if (player.id == callBack.Sender.AccountID)
                                 {
                                     player.state(callBack, steamFriends);
-                                }
-                            }
-                            break;
-                        #endregion
-
-                        #region !reset
-                        case "!reset":
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Resetting stats back to 100...");
-                            foreach (Structures.PlayerStructure player in players) // Loop the list
-                            {
-                                if (player.id == callBack.Sender.AccountID)
-                                {
-                                    player.setupGame();
                                 }
                             }
                             break;

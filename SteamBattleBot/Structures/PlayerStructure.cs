@@ -26,8 +26,8 @@ namespace SteamBattleBot.Structures
         
         public void attack(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
-            hitChance = _random.Next(1, 3);
-            if (hitChance == 1) // Missed
+            hitChance = _random.Next(1, 4);
+            if (hitChance == 3) // Missed
             {
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the monster!");
             } else
@@ -36,9 +36,10 @@ namespace SteamBattleBot.Structures
                 enemy.hp -= damageDone;
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the monster for {0} damage!", damageDone));
             }
-
-            hitChance = _random.Next(1, 3);
-            if (hitChance == 1) // Missed
+            Console.WriteLine(hitChance);
+            hitChance = _random.Next(1, 4);
+            Console.WriteLine(hitChance);
+            if (hitChance == 3) // Missed
             {
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The monster missed you!");
             }

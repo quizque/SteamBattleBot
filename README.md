@@ -24,7 +24,6 @@ Command | Action
 `!state` | Used to view yours and the monsters state.
 `!shutdown` | Used to shutdown the bot (Admin only)
 `!help` | Display commands
-`!reset` | Reset the game
 
 ### Features
 - Auto login (Currently unsecure, mostly just for testing)
