@@ -263,6 +263,18 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
+                        #region !shop
+                        case "!shop":
+                            foreach (Structures.PlayerStructure player in players) // Loop the list
+                            {
+                                if (player.id == callBack.Sender.AccountID)
+                                {
+                                    player.displayShop(callBack, steamFriends);
+                                }
+                            }
+                            break;
+                        #endregion
+
                         #region !state
                         case "!state":
                             foreach (Structures.PlayerStructure player in players) // Loop the list
@@ -281,6 +293,13 @@ namespace SteamBattleBot
                             steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!setup\n!shutdown(admin only)\n!resetadmins(admin only)");
                             break;
                         #endregion
+                    }
+                }
+                foreach (Structures.PlayerStructure player in players) // Loop the list
+                {
+                    if (player.id == callBack.Sender.AccountID && callBack.Message.Length == 1 && player.shopMode == true)
+                    {
+                        player.processShop(callBack.Message, callBack, steamFriends);
                     }
                 }
             }
