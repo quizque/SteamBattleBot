@@ -14,7 +14,7 @@ namespace SteamBattleBot
         SteamUser steamUser;
         SteamFriends steamFriends;
 
-        bool isRunning;
+        bool isRunning, checkedAdminList = false;
 
         public string user, pass;
 
@@ -66,6 +66,7 @@ namespace SteamBattleBot
 
         void OnConnected(SteamClient.ConnectedCallback callBack)
         {
+
             if (callBack.Result != EResult.OK)
             {
                 Console.WriteLine("Unable to connect to Steam: {0}", callBack.Result);
@@ -196,7 +197,7 @@ namespace SteamBattleBot
 
                     switch (command)
                     {
-                        #region !shutdown
+                        #region !shutdown (Admin only)
                         case "!shutdown":
                             if (!isBotAdmin(callBack.Sender))
                             {
@@ -204,6 +205,20 @@ namespace SteamBattleBot
                                 break;
                             }
                             Environment.Exit(0);
+                            break;
+                        #endregion
+
+                        #region !resetadmins (Admin only)
+                        case "!resetadmins":
+                            if (!isBotAdmin(callBack.Sender))
+                            {
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !resetadmins command!");
+                                break;
+                            }
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Rechecking admin.txt...");
+                            checkedAdminList = false;
+                            isBotAdmin(callBack.Sender, true);
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Done!");
                             break;
                         #endregion
 
@@ -263,7 +278,7 @@ namespace SteamBattleBot
                         #region !help
                         case "!help":
                             Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "The current commands are:\n!help\n!attack\n!setup\n!shutdown(admin only)");
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!setup\n!shutdown(admin only)\n!resetadmins(admin only)");
                             break;
                         #endregion
                     }
@@ -271,37 +286,44 @@ namespace SteamBattleBot
             }
         }
 
-        bool isBotAdmin(SteamID sid)
+        bool isBotAdmin(SteamID sid, bool refresh = false)
         {
             try
             {
-                string[] lines = File.ReadAllLines("admin.txt"); // Read all the SteamID64s in the file
-                admins.Clear(); // Clear the list to store the new admins
-
-                foreach (string id in lines) // Read each line in var
+                if (checkedAdminList != true)
                 {
-                    try // Try to convert it
+                    string[] lines = File.ReadAllLines("admin.txt"); // Read all the SteamID64s in the file
+                    admins.Clear(); // Clear the list to store the new admins
+
+                    foreach (string id in lines) // Read each line in var
                     {
-                        admins.Add(Convert.ToUInt64(id)); // Add ID to list
-                    }
-                    catch // If invalid...
-                    {
-                        Console.WriteLine("Invalid Steam64ID found in admin.txt! Skipping..."); // Tell the user
+                        try // Try to convert it
+                        {
+                            Console.WriteLine(id + " w");
+                            admins.Add(Convert.ToUInt64(id)); // Add ID to list
+                        }
+                        catch // If invalid...
+                        {
+                            Console.WriteLine(id + " f");
+                            Console.WriteLine("Invalid Steam64ID found in admin.txt! Skipping..."); // Tell the user
+                        }
                     }
                 }
 
-                foreach (ulong id in admins) // Loop the list
+                if (!refresh)
                 {
-                    if (sid.ConvertToUInt64() == id) // Convert the users steamID and see if it matches...
+                    foreach (ulong id in admins) // Loop the list
                     {
-                        return true; // Return true if id matched
+                        if (sid.ConvertToUInt64() == id) // Convert the users steamID and see if it matches...
+                        {
+                            return true; // Return true if id matched
+                        }
                     }
+                    // If their ID was not found, tell the user
+                    steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "You are not a bot admin.");
+                    // And put the message in console
+                    Console.WriteLine(steamFriends.GetFriendPersonaName(sid) + " attempted to use an administrator command while not an administrator.");
                 }
-
-                // If their ID was not found, tell the user
-                steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "You are not a bot admin.");
-                // And put the message in console
-                Console.WriteLine(steamFriends.GetFriendPersonaName(sid) + " attempted to use an administrator command while not an administrator.");
                 return false; // And finaly return false
             }
             catch (Exception e)
