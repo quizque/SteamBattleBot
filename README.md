@@ -1,8 +1,6 @@
 ## SteamBattleBot
 Steam chat game Bot used to pass time
 
-[![Build Status](https://img.shields.io/appveyor/ci/nickthegamer5/SteamBattleBot/master.svg?style=flat-square&label=Windows)](https://ci.appveyor.com/project/nickthegamer5/steambattlebot)
-
 ### Usage
 **You will need an alt account to use this (Or just use your own and let a friend play)**
 
