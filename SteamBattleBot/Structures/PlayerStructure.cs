@@ -119,6 +119,7 @@ namespace SteamBattleBot.Structures
                     {
                         coins -= 3;
                         hp += 5;
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You healed 5 hp!");
                     }
                     break;
                 #endregion
@@ -129,6 +130,7 @@ namespace SteamBattleBot.Structures
                     {
                         coins -= 5;
                         hp += 10;
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You healed 10 hp!");
                     }
                     break;
                 #endregion
