@@ -37,7 +37,7 @@ namespace SteamBattleBot.Structures
         {
             if (!shopMode)
             {
-                if ((enemy.hp >=40) && (enemy.hp <- 50))
+                if ((enemy.hp >=40) && (enemy.hp <= 50))
                 {
                     enemy.hp = enemy.hpboss;
                     steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You are facing a Gaben Clone.");
@@ -69,7 +69,7 @@ namespace SteamBattleBot.Structures
 
                     stateGaben(callback, steamFriends);
                 }
-                else
+                else if (enemy.hp < 40)
                 {
                     #region Miss/Hit checker
                     hitChance = _random.Next(1, 4);
