@@ -16,20 +16,17 @@ namespace SteamBattleBot.Structures
 
         public bool shopMode = false;
 
-        private int hp, coins, hitChance, damageDone, points, damageTaken, dD, maxhp;
+        private int hp, coins, hitChance, damageDone, points, damageTaken, damageMultiplier, maxhp;
 
 
         public void setupGame()
         {
-            enemy.hp = _random.Next(10, 50);
-            enemy.coins = _random.Next(1, 5);
-            enemy.points = _random.Next(1, 2);
-            enemy.hpboss = _random.Next(40, 50);
+            enemy.Reset();
             maxhp = 50;
             hp = 50;
             coins = 5;
             points = 0;
-            int dD = damageDone;
+            damageMultiplier = 1;
             damageDone = _random.Next(1, 10);
         }
 
@@ -251,7 +248,7 @@ namespace SteamBattleBot.Structures
                     if (points >= 1)
                     {
                         points -= 1;
-                        dD *= 2;
+                        damageMultiplier *= 2;
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You increased your damage.");
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have " + points + " points left.");
                     }

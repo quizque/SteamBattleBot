@@ -19,21 +19,44 @@ Steam chat game Bot used to pass time
 ### Commands
 Command | Action
 ------------ | -------------
-`!setup` | Used to setup/reset a game
-`!attack` | Used to attack the "monster".
-`!state` | Used to view yours and the monsters state.
-`!shutdown` | Used to shutdown the bot (Admin only)
-`!help` | Display commands
+`!setup` | Used to setup/reset a game.
+`!attack` | Used to attack the enemy.
+`!status` | Used to view yours and enemies state.
+`!statusboss` | Used to view yours and the bosses state.
+`!shop` | Used to open the shop.
+`!help` | Display commands.
+`!shutdown` | Used to shut down the bot (Admin only).
+`!resetadmins` | Recheck admin.txt for new admins (Admin only).
 
 ### Features
-- Auto login (Currently unsecure, mostly just for testing)
+- Auto login (Currently unsecured, mostly just for testing)
   - Create a creds.txt in the same folder as the program and put your username on the top line and your password on the line below then simply open the program.
 
 ### Need to do list
 - [Check out the projects!](https://github.com/nickthegamer5/SteamBattleBot/projects)
 
 ### Libarys used
-- [Fody.Costura](https://github.com/Fody/Costura) for packaging the DLLs
-- [SteamKit2](https://github.com/SteamRE/SteamKit) for handling steam requests
+- [Fody.Costura](https://github.com/Fody/Costura) for packaging the DLLs.
+- [SteamKit2](https://github.com/SteamRE/SteamKit) for handling steam requests.
 
 This project is licensed under the terms of the MIT license.
+
+
+
+
+
+
+5
+
+
+
+
+
+
+
+
+
+
+
+
+
