@@ -61,7 +61,7 @@ namespace SteamBattleBot.Structures
                     {
                         damageTaken = _random.Next(1, 20); // How much damage did the monster do
                         hp -= damageTaken;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Gaben Clone hitted you with the Ban Hammer for {0} damage!", damageDone));
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Gaben Clone hitted you with the Ban Hammer for {0} damage!", damageTaken));
                     }
                     #endregion
 
@@ -91,7 +91,7 @@ namespace SteamBattleBot.Structures
                     {
                         damageTaken = _random.Next(1, 12); // How much damage did the monster do
                         hp -= damageTaken;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Robot hit you for {0} damage!", damageDone));
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Robot hit you for {0} damage!", damageTaken));
                     }
                     #endregion
 
