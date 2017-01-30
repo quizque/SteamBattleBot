@@ -326,7 +326,7 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
-                                    player.state(callBack, steamFriends);
+                                    player.stateGaben(callBack, steamFriends);
                                 }
                             }
                             break;
