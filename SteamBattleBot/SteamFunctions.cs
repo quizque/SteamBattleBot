@@ -275,8 +275,7 @@ namespace SteamBattleBot
                                 if (players[i].id == callBack.Sender.AccountID)
                                 {
                                     Console.WriteLine("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Starting game...");
-                                    players[i].setupGame();
+                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "You are already setup! Type !restart to restart your game.");
                                     return;
                                 }
                             }
