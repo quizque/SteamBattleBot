@@ -210,7 +210,7 @@ namespace SteamBattleBot
             //string[] args; UNCOMMECT WHEN BETTER SETUP IS ADDED!
             if (callBack.EntryType == EChatEntryType.ChatMsg)
             {
-                if (callBack.Message.Length > 1 && callBack.Message.Remove(1) == "!")
+            if (callBack.Message.Length > 1 && callBack.Message.Remove(1) == "!")
                 {
                     string command = callBack.Message;
                     if (callBack.Message.Contains(" "))
@@ -227,7 +227,7 @@ namespace SteamBattleBot
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
                                 break;
                             }
-                            //Environment.Exit(0);
+                            Environment.Exit(0);
                             break;
                         #endregion
 
