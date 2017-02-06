@@ -35,126 +35,133 @@ namespace SteamBattleBot.Structures
         {
             if (!shopMode)
             {
-                if (enemy.classRandom == 0)
+                if (hp <= 0) //Stops the user from attacking if below 0 HP
                 {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You are facing a Gaben Clone.");
-                    #region Miss/Hit checker
-                    hitChance = _random.Next(1, 4);
-                    if (hitChance == 3) // Missed
-                    {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Gaben Clone!");
-                    }
-                    else
-                    {
-                        enemy.hp -= damageDone;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Gaben Clone for {0} damage!", damageDone));
-                    }
-                    hitChance = _random.Next(1, 4);
-                    if (hitChance == 3) // Missed
-                    {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Gaben Clone missed you!");
-                    }
-                    else
-                    {
-                        damageTaken = _random.Next(1, 20); // How much damage did the monster do
-                        hp -= damageTaken;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Gaben Clone hitted you with the Ban Hammer for {0} damage!", damageTaken));
-                    }
-                    #endregion
-
-                    hpCheck(callback, steamFriends);
-                    state(callback, steamFriends);
-                }
-                else if (enemy.classRandom == 1)
-                {
-                    #region Miss/Hit checker
-                    hitChance = _random.Next(1, 4);
-                    if (hitChance == 3) // Missed
-                    {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Bot!");
-                    }
-                    else
-                    {
-                        enemy.hp -= damageDone;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Bot for {0} damage!", damageDone));
-                    }
-                    hitChance = _random.Next(1, 4);
-                    if (hitChance == 3) // Missed
-                    {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Bot missed you!");
-                    }
-                    else
-                    {
-                        damageTaken = _random.Next(1, 14); // How much damage did the monster do
-                        hp -= damageTaken;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Bot spammed you with phishing links for {0} damage!", damageTaken));
-                    }
-                    #endregion
-
-                    hpCheck(callback, steamFriends);
-                    state(callback, steamFriends);
-                }
-                else if (enemy.classRandom == 2)
-                {
-                    #region Miss/Hit checker
-                    hitChance = _random.Next(1, 4);
-                    if (hitChance == 3) // Missed
-                    {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Mod!");
-                    }
-                    else
-                    {
-                        enemy.hp -= damageDone;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Mod for {0} damage!", damageDone));
-                    }
-                    hitChance = _random.Next(1, 4);
-                    if (hitChance == 3) // Missed
-                    {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Mod missed you!");
-                    }
-                    else
-                    {
-                        damageTaken = _random.Next(1, 16); // How much damage did the monster do
-                        hp -= damageTaken;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Mod blocks you from posting for {0} damage!", damageTaken));
-                    }
-                    #endregion
-
-                    hpCheck(callback, steamFriends);
-                    state(callback, steamFriends);
-                }
-                else if (enemy.classRandom == 3)
-                {
-                    #region Miss/Hit checker
-                    hitChance = _random.Next(1, 4);
-                    if (hitChance == 3) // Missed
-                    {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Admin!");
-                    }
-                    else
-                    {
-                        enemy.hp -= damageDone;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Admin for {0} damage!", damageDone));
-                    }
-                    hitChance = _random.Next(1, 4);
-                    if (hitChance == 3) // Missed
-                    {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Admin missed you!");
-                    }
-                    else
-                    {
-                        damageTaken = _random.Next(1, 18); // How much damage did the monster do
-                        hp -= damageTaken;
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Admin bans you for trading for {0} damage!", damageTaken));
-                    }
-                    #endregion
-
-                    hpCheck(callback, steamFriends);
-                    state(callback, steamFriends);
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You cannot attack anymore! Type !restart to start a new game!");
                 }
                 else
                 {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Something is wrong with the bot. Please contact the owner of the bot."));
+                    if (enemy.classRandom == 0)
+                    {
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You are facing a Gaben Clone.");
+                        #region Miss/Hit checker
+                        hitChance = _random.Next(1, 4);
+                        if (hitChance == 3) // Missed
+                        {
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Gaben Clone!");
+                        }
+                        else
+                        {
+                            enemy.hp -= damageDone;
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Gaben Clone for {0} damage!", damageDone));
+                        }
+                        hitChance = _random.Next(1, 4);
+                        if (hitChance == 3) // Missed
+                        {
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Gaben Clone missed you!");
+                        }
+                        else
+                        {
+                            damageTaken = _random.Next(1, 20); // How much damage did the monster do
+                            hp -= damageTaken;
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Gaben Clone hitted you with the Ban Hammer for {0} damage!", damageTaken));
+                        }
+                        #endregion
+
+                        hpCheck(callback, steamFriends);
+                        state(callback, steamFriends);
+                    }
+                    else if (enemy.classRandom == 1)
+                    {
+                        #region Miss/Hit checker
+                        hitChance = _random.Next(1, 4);
+                        if (hitChance == 3) // Missed
+                        {
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Bot!");
+                        }
+                        else
+                        {
+                            enemy.hp -= damageDone;
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Bot for {0} damage!", damageDone));
+                        }
+                        hitChance = _random.Next(1, 4);
+                        if (hitChance == 3) // Missed
+                        {
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Bot missed you!");
+                        }
+                        else
+                        {
+                            damageTaken = _random.Next(1, 14); // How much damage did the monster do
+                            hp -= damageTaken;
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Bot spammed you with phishing links for {0} damage!", damageTaken));
+                        }
+                        #endregion
+
+                        hpCheck(callback, steamFriends);
+                        state(callback, steamFriends);
+                    }
+                    else if (enemy.classRandom == 2)
+                    {
+                        #region Miss/Hit checker
+                        hitChance = _random.Next(1, 4);
+                        if (hitChance == 3) // Missed
+                        {
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Mod!");
+                        }
+                        else
+                        {
+                            enemy.hp -= damageDone;
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Mod for {0} damage!", damageDone));
+                        }
+                        hitChance = _random.Next(1, 4);
+                        if (hitChance == 3) // Missed
+                        {
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Mod missed you!");
+                        }
+                        else
+                        {
+                            damageTaken = _random.Next(1, 16); // How much damage did the monster do
+                            hp -= damageTaken;
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Mod blocks you from posting for {0} damage!", damageTaken));
+                        }
+                        #endregion
+
+                        hpCheck(callback, steamFriends);
+                        state(callback, steamFriends);
+                    }
+                    else if (enemy.classRandom == 3)
+                    {
+                        #region Miss/Hit checker
+                        hitChance = _random.Next(1, 4);
+                        if (hitChance == 3) // Missed
+                        {
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Admin!");
+                        }
+                        else
+                        {
+                            enemy.hp -= damageDone;
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Admin for {0} damage!", damageDone));
+                        }
+                        hitChance = _random.Next(1, 4);
+                        if (hitChance == 3) // Missed
+                        {
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Admin missed you!");
+                        }
+                        else
+                        {
+                            damageTaken = _random.Next(1, 18); // How much damage did the monster do
+                            hp -= damageTaken;
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Admin bans you for trading for {0} damage!", damageTaken));
+                        }
+                        #endregion
+
+                        hpCheck(callback, steamFriends);
+                        state(callback, steamFriends);
+                    }
+                    else
+                    {
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Something is wrong with the bot. Please contact the owner of the bot."));
+                    }
                 }
             }
         }
