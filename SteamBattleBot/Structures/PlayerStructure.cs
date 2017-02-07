@@ -16,7 +16,7 @@ namespace SteamBattleBot.Structures
 
         public bool shopMode = false;
 
-        private int hp, coins, hitChance, damageDone, points, damageTaken, damageMultiplier, maxhp;
+        private int hp, coins, hitChance, damageDone, points, damageTaken, damageMultiplier, maxhp, level, exp;
 
 
         public void setupGame()
@@ -28,6 +28,8 @@ namespace SteamBattleBot.Structures
             points = 0;
             damageMultiplier = 1;
             damageDone = _random.Next(1, 10);
+            level = 1;
+            exp = 0;
         }
 
         #region Attack and Check which monster to attack
@@ -173,22 +175,22 @@ namespace SteamBattleBot.Structures
             if (enemy.classRandom == 1)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nCoins: {1}\nPoints: {3}\nSteam Bot:\nHP: {2}", hp, coins, enemy.hp, points));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {4}\nXP: {5}\nCoins: {1}\nPoints: {3}\nSteam Bot:\nHP: {2}", hp, coins, enemy.hp, points, level, exp));
             }
             else if (enemy.classRandom == 0)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nCoins: {1}\nPoints: {3}\nGaben Clone:\nHP: {2}", hp, coins, enemy.hp, points));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {4}\nXP: {5}\nCoins: {1}\nPoints: {3}\nGaben Clone:\nHP: {2}", hp, coins, enemy.hp, points, level, exp));
             }
             else if (enemy.classRandom == 2)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nCoins: {1}\nPoints: {3}\nSteam Mod:\nHP: {2}", hp, coins, enemy.hp, points));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {4}\nXP: {5}\nCoins: {1}\nPoints: {3}\nSteam Mod:\nHP: {2}", hp, coins, enemy.hp, points, level, exp));
             }
             else if (enemy.classRandom == 3)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nCoins: {1}\nPoints: {3}\nSteam Admin:\nHP: {2}", hp, coins, enemy.hp, points));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {4}\nXP: {5}\nCoins: {1}\nPoints: {3}\nSteam Admin:\nHP: {2}", hp, coins, enemy.hp, points, level, exp));
             }
             else
             {
@@ -196,6 +198,18 @@ namespace SteamBattleBot.Structures
             }
         }
         #endregion
+
+        private void levelup(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        {
+            if (exp == 50)
+            {
+                level += 1;
+                coins += 15;
+                points += 5;
+                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Congrats, you are level {0} and earned 15 coins and 5 points!", level));
+                exp -= 50;
+            }
+        }
 
         #region Check if battle is won/game over.
         private bool hpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
@@ -209,8 +223,9 @@ namespace SteamBattleBot.Structures
                 }
                 else if (enemy.hp <= 0)
                 {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Steam Bot! The Steam Bot dropped {0} coins. Making new enemy...", enemy.coins));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Steam Bot! The Steam Bot dropped {0} coins and you earned {1} XP. Making new enemy...", enemy.coins, enemy.exp));
                     coins += enemy.coins;
+                    exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
                     return true;
@@ -225,8 +240,9 @@ namespace SteamBattleBot.Structures
                 }
                 else if (enemy.hp <= 0)
                 {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Gaben Clone! He dropped {0} skill points. Making new enemy...", enemy.points));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Gaben Clone! He dropped {0} skill points and you earned {1} XP. Making new enemy...", enemy.points, enemy.exp));
                     points += enemy.points;
+                    exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
                     return true;
@@ -241,8 +257,9 @@ namespace SteamBattleBot.Structures
                 }
                 else if (enemy.hp <= 0)
                 {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Steam Mod! The Steam Mod dropped {0} coins. Making new enemy...", enemy.coins));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Steam Mod! The Steam Mod dropped {0} coins and you earned {1} XP. Making new enemy...", enemy.coins, enemy.exp));
                     coins += enemy.coins;
+                    exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
                     return true;
@@ -257,8 +274,9 @@ namespace SteamBattleBot.Structures
                 }
                 else if (enemy.hp <= 0)
                 {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Steam Admin! The Steam Admin dropped {0} coins. Making new enemy...", enemy.coins));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Steam Admin! The Steam Admin dropped {0} coins and you earned {1} XP. Making new enemy...", enemy.coins, enemy.exp));
                     coins += enemy.coins;
+                    exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
                     return true;
