@@ -34,7 +34,7 @@ namespace SteamBattleBot.Structures
             maxHp = 50;
             hp = 50;
             coins = 5;
-            skillPoints = 5;
+            skillPoints = 0;
             damageMultiplier = 0;
             level = 1;
             exp = 0;
