@@ -175,22 +175,22 @@ namespace SteamBattleBot.Structures
             if (enemy.classRandom == 1)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {4}\nXP: {5}\nCoins: {1}\nPoints: {3}\nSteam Bot:\nHP: {2}", hp, coins, enemy.hp, points, level, exp));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nSteam Bot:\nHP: {5}", hp, level, exp, coins, points, enemy.hp));
             }
             else if (enemy.classRandom == 0)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {4}\nXP: {5}\nCoins: {1}\nPoints: {3}\nGaben Clone:\nHP: {2}", hp, coins, enemy.hp, points, level, exp));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nGaben Clone:\nHP: {5}", hp, level, exp, coins, points, enemy.hp));
             }
             else if (enemy.classRandom == 2)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {4}\nXP: {5}\nCoins: {1}\nPoints: {3}\nSteam Mod:\nHP: {2}", hp, coins, enemy.hp, points, level, exp));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nSteam Mod:\nHP: {5}", hp, level, exp, coins, points, enemy.hp));
             }
             else if (enemy.classRandom == 3)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {4}\nXP: {5}\nCoins: {1}\nPoints: {3}\nSteam Admin:\nHP: {2}", hp, coins, enemy.hp, points, level, exp));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nSteam Admin:\nHP: {5}", hp, level, exp, coins, points, enemy.hp));
             }
             else
             {
@@ -207,7 +207,7 @@ namespace SteamBattleBot.Structures
                 coins += 15;
                 points += 5;
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Congrats, you are level {0} and earned 15 coins and 5 points!", level));
-                exp -= 50;
+                exp = 0;
             }
         }
 
