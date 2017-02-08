@@ -34,8 +34,8 @@ namespace SteamBattleBot.Structures
             maxHp = 50;
             hp = 50;
             coins = 5;
-            skillPoints = 0;
-            damageMultiplier = 1;
+            skillPoints = 5;
+            damageMultiplier = 0;
             level = 1;
             exp = 0;
         }
@@ -66,6 +66,7 @@ namespace SteamBattleBot.Structures
                         else
                         {
                             damageDone = _random.Next(1, 10);
+                            damageDone += damageMultiplier;
                             enemy.hp -= damageDone;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Gaben Clone for {0} damage!", damageDone));
                         }
@@ -96,6 +97,7 @@ namespace SteamBattleBot.Structures
                         else
                         {
                             damageDone = _random.Next(1, 10);
+                            damageDone += damageMultiplier;
                             enemy.hp -= damageDone;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Bot for {0} damage!", damageDone));
                         }
@@ -126,6 +128,7 @@ namespace SteamBattleBot.Structures
                         else
                         {
                             damageDone = _random.Next(1, 10);
+                            damageDone += damageMultiplier;
                             enemy.hp -= damageDone;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Mod for {0} damage!", damageDone));
                         }
@@ -156,6 +159,7 @@ namespace SteamBattleBot.Structures
                         else
                         {
                             damageDone = _random.Next(1, 10);
+                            damageDone += damageMultiplier;
                             enemy.hp -= damageDone;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Admin for {0} damage!", damageDone));
                         }
@@ -527,7 +531,7 @@ namespace SteamBattleBot.Structures
                     if (skillPoints >= 1)
                     {
                         skillPoints -= 1;
-                        damageMultiplier *= 2;
+                        damageMultiplier += 3;
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You increased your damage.");
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have " + skillPoints + " points left.");
                     }
