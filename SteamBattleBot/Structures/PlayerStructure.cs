@@ -27,7 +27,7 @@ namespace SteamBattleBot.Structures
             coins = 5;
             points = 0;
             damageMultiplier = 1;
-            damageDone = _random.Next(1, 10);
+            damageDone = _random.Next(5, 10);
             level = 1;
             exp = 0;
         }
@@ -64,7 +64,7 @@ namespace SteamBattleBot.Structures
                         }
                         else
                         {
-                            damageTaken = _random.Next(1, 20); // How much damage did the monster do
+                            damageTaken = _random.Next(1, 15); // How much damage did the monster do
                             hp -= damageTaken;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Gaben Clone hitted you with the Ban Hammer for {0} damage!", damageTaken));
                         }
@@ -93,7 +93,7 @@ namespace SteamBattleBot.Structures
                         }
                         else
                         {
-                            damageTaken = _random.Next(1, 14); // How much damage did the monster do
+                            damageTaken = _random.Next(1, 5); // How much damage did the monster do
                             hp -= damageTaken;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Bot spammed you with phishing links for {0} damage!", damageTaken));
                         }
@@ -122,7 +122,7 @@ namespace SteamBattleBot.Structures
                         }
                         else
                         {
-                            damageTaken = _random.Next(1, 16); // How much damage did the monster do
+                            damageTaken = _random.Next(1, 10); // How much damage did the monster do
                             hp -= damageTaken;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Mod blocks you from posting for {0} damage!", damageTaken));
                         }
@@ -151,7 +151,7 @@ namespace SteamBattleBot.Structures
                         }
                         else
                         {
-                            damageTaken = _random.Next(1, 18); // How much damage did the monster do
+                            damageTaken = _random.Next(5, 10); // How much damage did the monster do
                             hp -= damageTaken;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Admin bans you for trading for {0} damage!", damageTaken));
                         }

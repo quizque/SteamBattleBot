@@ -258,12 +258,12 @@ namespace SteamBattleBot
                                     }
                                 }
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Done!");
-                            }catch (Exception e)
+                            } catch (Exception e)
                             {
                                 Console.WriteLine("Error while checking admin.txt: {0}", e.ToString());
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, string.Format("Error while checking admin.txt: {0}", e.ToString()));
                             }
-                            
+
                             break;
                         #endregion
 
@@ -309,17 +309,7 @@ namespace SteamBattleBot
                                     return;
                                 }
                             }
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
 
-                            players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
-
-                            for (var i = 0; i < players.Count; i++)
-                            {
-                                if (callBack.Sender.AccountID == players[i].id)
-                                {
-                                    players[i].setupGame();
-                                }
-                            }
                             break;
 
                         #endregion
@@ -333,6 +323,12 @@ namespace SteamBattleBot
                                     player.attack(callBack, steamFriends);
                                 }
                             }
+                            break;
+                        #endregion
+
+                        #region !changelog
+                        case "!changelog":
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Changelog:\nAdded Changelog\nBalanced HP and Damage on Enemies");
                             break;
                         #endregion
 
@@ -363,7 +359,7 @@ namespace SteamBattleBot
                         #region !help
                         case "!help":
                             Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!setup\n!status\n!shop\n!shutdown(admin only)\n!resetadmins(admin only)");
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!setup\n!status\n!shop\n!changelog\n!shutdown(admin only)\n!resetadmins(admin only)");
                             break;
                         #endregion
                     }
@@ -404,7 +400,8 @@ namespace SteamBattleBot
                 {
                     steamFriends.AddFriend(friend.SteamID);
                     Thread.Sleep(2000);
-                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am Battle Bot. Ask the owner to start a battle!");
+                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am the STEAM Battle Bot. Type !setup to start the battle!");
+                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Type !help for commands related to the bot!");
                 }
             }
         }
