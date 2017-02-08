@@ -53,7 +53,7 @@ namespace SteamBattleBot
                 Console.Write("Username: ");
                 steam.user = Console.ReadLine();
                 Console.Write("Password: ");
-                steam.pass = steam.inputPass();
+                steam.pass = steam.InputPass();
             }
             #endregion
 

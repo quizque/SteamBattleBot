@@ -1,20 +1,16 @@
 ﻿using System;
-using SteamKit2;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SteamBattleBot.Structures
 {
     class EnemyStructure
     {
         private Random _random = new Random();
-        public int hp;
-        public int coins;
-        public int points;
-        public int classRandom;
-        public int exp;
+        public int hp, 
+                   coins, 
+                   points,
+                   classRandom, 
+                   exp;
+
         public string type;
 
         public void Reset()
