@@ -34,7 +34,11 @@ namespace SteamBattleBot.Structures
         #region Attack and Check which monster to attack
         public void attack(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
-            if (!shopMode)
+            if (shopMode == true)
+            {
+                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You must exit the shop! Type !shop to exit!");
+            }
+            else
             {
                 if (hp <= 0) //Stops the user from attacking if below 0 HP
                 {
@@ -44,10 +48,9 @@ namespace SteamBattleBot.Structures
                 {
                     if (enemy.classRandom == 0)
                     {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You are facing a Gaben Clone.");
                         #region Miss/Hit checker
-                        hitChance = _random.Next(1, 4);
-                        if (hitChance == 3) // Missed
+                        hitChance = _random.Next(1, 7);
+                        if (hitChance == 4) // Missed
                         {
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Gaben Clone!");
                         }
@@ -66,7 +69,7 @@ namespace SteamBattleBot.Structures
                         {
                             damageTaken = _random.Next(1, 15); // How much damage did the monster do
                             hp -= damageTaken;
-                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Gaben Clone hitted you with the Ban Hammer for {0} damage!", damageTaken));
+                            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Gaben Clone hit you with the Ban Hammer for {0} damage!", damageTaken));
                         }
                         #endregion
 
@@ -76,8 +79,8 @@ namespace SteamBattleBot.Structures
                     else if (enemy.classRandom == 1)
                     {
                         #region Miss/Hit checker
-                        hitChance = _random.Next(1, 4);
-                        if (hitChance == 3) // Missed
+                        hitChance = _random.Next(1, 7);
+                        if (hitChance == 4) // Missed
                         {
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Bot!");
                         }
@@ -106,8 +109,8 @@ namespace SteamBattleBot.Structures
                     else if (enemy.classRandom == 2)
                     {
                         #region Miss/Hit checker
-                        hitChance = _random.Next(1, 4);
-                        if (hitChance == 3) // Missed
+                        hitChance = _random.Next(1, 7);
+                        if (hitChance == 4) // Missed
                         {
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Mod!");
                         }
@@ -136,8 +139,8 @@ namespace SteamBattleBot.Structures
                     else if (enemy.classRandom == 3)
                     {
                         #region Miss/Hit checker
-                        hitChance = _random.Next(1, 4);
-                        if (hitChance == 3) // Missed
+                        hitChance = _random.Next(1, 7);
+                        if (hitChance == 4) // Missed
                         {
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You missed the Steam Admin!");
                         }
@@ -248,6 +251,7 @@ namespace SteamBattleBot.Structures
                     exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You are facing a {0}!", enemy.type));
                     return true;
                 }
             }
@@ -265,6 +269,7 @@ namespace SteamBattleBot.Structures
                     exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You are facing a {0}!", enemy.type));
                     return true;
                 }
             }
@@ -282,6 +287,7 @@ namespace SteamBattleBot.Structures
                     exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You are facing a {0}!", enemy.type));
                     return true;
                 }
             }
@@ -299,6 +305,7 @@ namespace SteamBattleBot.Structures
                     exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You are facing a {0}!", enemy.type));
                     return true;
                 }
             }

@@ -14,6 +14,7 @@ namespace SteamBattleBot
         SteamUser steamUser;
         SteamFriends steamFriends;
 
+
         bool isRunning;
 
         public string user, pass;
@@ -280,6 +281,7 @@ namespace SteamBattleBot
                                 }
                             }
                             steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
+                        
 
                             players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
 
