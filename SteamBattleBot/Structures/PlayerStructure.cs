@@ -27,7 +27,6 @@ namespace SteamBattleBot.Structures
             coins = 5;
             points = 0;
             damageMultiplier = 1;
-            damageDone = _random.Next(5, 10);
             level = 1;
             exp = 0;
         }
@@ -54,6 +53,7 @@ namespace SteamBattleBot.Structures
                         }
                         else
                         {
+                            damageDone = _random.Next(1, 10);
                             enemy.hp -= damageDone;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Gaben Clone for {0} damage!", damageDone));
                         }
@@ -83,6 +83,7 @@ namespace SteamBattleBot.Structures
                         }
                         else
                         {
+                            damageDone = _random.Next(1, 10);
                             enemy.hp -= damageDone;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Bot for {0} damage!", damageDone));
                         }
@@ -112,6 +113,7 @@ namespace SteamBattleBot.Structures
                         }
                         else
                         {
+                            damageDone = _random.Next(1, 10);
                             enemy.hp -= damageDone;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Mod for {0} damage!", damageDone));
                         }
@@ -141,6 +143,7 @@ namespace SteamBattleBot.Structures
                         }
                         else
                         {
+                            damageDone = _random.Next(1, 10);
                             enemy.hp -= damageDone;
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You hit the Steam Admin for {0} damage!", damageDone));
                         }
@@ -175,22 +178,34 @@ namespace SteamBattleBot.Structures
             if (enemy.classRandom == 1)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nSteam Bot:\nHP: {5}", hp, level, exp, coins, points, enemy.hp));
+                { 
+                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} HP!", hp));
+                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Steam Bot have {0} HP!", enemy.hp));
+                }
             }
             else if (enemy.classRandom == 0)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nGaben Clone:\nHP: {5}", hp, level, exp, coins, points, enemy.hp));
+                {
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} HP!", hp));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Gaben Clone have {0} HP!", enemy.hp));
+                }
             }
             else if (enemy.classRandom == 2)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nSteam Mod:\nHP: {5}", hp, level, exp, coins, points, enemy.hp));
+                {
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} HP!", hp));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Steam Mod have {0} HP!", enemy.hp));
+                }
             }
             else if (enemy.classRandom == 3)
             {
                 if (!shopMode)
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Status\nYou:\nHP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nSteam Admin:\nHP: {5}", hp, level, exp, coins, points, enemy.hp));
+                {
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} HP!", hp));
+                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Steam Admin have {0} HP!", enemy.hp));
+                }
             }
             else
             {
@@ -209,6 +224,11 @@ namespace SteamBattleBot.Structures
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Congrats, you are level {0} and earned 15 coins and 5 points!", level));
                 exp = 0;
             }
+        }
+
+        public void stats(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        {
+            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Stats\nMax HP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}", maxhp, level, exp, coins, points));
         }
 
         #region Check if battle is won/game over.
