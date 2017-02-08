@@ -14,6 +14,7 @@ namespace SteamBattleBot
         SteamUser steamUser;
         SteamFriends steamFriends;
 
+
         bool isRunning;
 
         public string user, pass;
@@ -210,7 +211,7 @@ namespace SteamBattleBot
             //string[] args; UNCOMMECT WHEN BETTER SETUP IS ADDED!
             if (callBack.EntryType == EChatEntryType.ChatMsg)
             {
-                if (callBack.Message.Length > 1 && callBack.Message.Remove(1) == "!")
+            if (callBack.Message.Length > 1 && callBack.Message.Remove(1) == "!")
                 {
                     string command = callBack.Message;
                     if (callBack.Message.Contains(" "))
@@ -227,7 +228,7 @@ namespace SteamBattleBot
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
                                 break;
                             }
-                            //Environment.Exit(0);
+                            Environment.Exit(0);
                             break;
                         #endregion
 
@@ -258,12 +259,12 @@ namespace SteamBattleBot
                                     }
                                 }
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Done!");
-                            }catch (Exception e)
+                            } catch (Exception e)
                             {
                                 Console.WriteLine("Error while checking admin.txt: {0}", e.ToString());
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, string.Format("Error while checking admin.txt: {0}", e.ToString()));
                             }
-                            
+
                             break;
                         #endregion
 
@@ -280,6 +281,7 @@ namespace SteamBattleBot
                                 }
                             }
                             steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
+                        
 
                             players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
 
@@ -309,17 +311,7 @@ namespace SteamBattleBot
                                     return;
                                 }
                             }
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
 
-                            players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
-
-                            for (var i = 0; i < players.Count; i++)
-                            {
-                                if (callBack.Sender.AccountID == players[i].id)
-                                {
-                                    players[i].setupGame();
-                                }
-                            }
                             break;
 
                         #endregion
@@ -336,6 +328,24 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
+                        #region !block
+                        case "!block":
+                            foreach (Structures.PlayerStructure player in players) // Loop the list
+                            {
+                                if (player.id == callBack.Sender.AccountID)
+                                {
+                                    player.block(callBack, steamFriends);
+                                }
+                            }
+                            break;
+                        #endregion
+
+                        #region !changelog
+                        case "!changelog":
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Changelog:\nAdded Changelog\nBalanced HP and Damage on Enemies\nAdded !block cmd for blocking attacks\nMinor Code fixes");
+                            break;
+                        #endregion
+
                         #region !shop
                         case "!shop":
                             foreach (Structures.PlayerStructure player in players) // Loop the list
@@ -348,13 +358,13 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
-                        #region !status
-                        case "!status":
+                        #region !stats
+                        case "!stats":
                             foreach (Structures.PlayerStructure player in players) // Loop the list
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
-                                    player.state(callBack, steamFriends);
+                                    player.stats(callBack, steamFriends);
                                 }
                             }
                             break;
@@ -363,7 +373,7 @@ namespace SteamBattleBot
                         #region !help
                         case "!help":
                             Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!setup\n!status\n!shop\n!shutdown(admin only)\n!resetadmins(admin only)");
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!block\n!setup\n!stats\n!shop\n!changelog\n!shutdown(admin only)\n!resetadmins(admin only)");
                             break;
                         #endregion
                     }
@@ -404,7 +414,8 @@ namespace SteamBattleBot
                 {
                     steamFriends.AddFriend(friend.SteamID);
                     Thread.Sleep(2000);
-                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am Battle Bot. Ask the owner to start a battle!");
+                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am the STEAM Battle Bot. Type !setup to start the battle!");
+                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Type !help for commands related to the bot!");
                 }
             }
         }
