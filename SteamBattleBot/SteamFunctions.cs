@@ -316,7 +316,7 @@ namespace SteamBattleBot
                             break;
 
                         #endregion
-
+                       
                         #region !attack
                         case "!attack":
                             foreach (Structures.PlayerStructure player in players) // Loop the list
@@ -328,6 +328,20 @@ namespace SteamBattleBot
                             }
                             break;
                         #endregion
+
+
+                        #region !special
+                        case "!special":
+                            foreach (Structures.PlayerStructure player in players) // Loop the list
+                            {
+                                if (player.id == callBack.Sender.AccountID)
+                                {
+                                    player.Special(callBack, steamFriends);
+                                }
+                            }
+                            break;
+                        #endregion
+
 
                         #region !block
                         case "!block":
