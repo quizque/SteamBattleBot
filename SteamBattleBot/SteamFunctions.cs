@@ -19,11 +19,7 @@ namespace SteamBattleBot
 
         public string user,
                       pass;
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> origin/master
         string[] lines;
 
         string authCode, twoFactorAuth;

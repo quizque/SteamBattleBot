@@ -5,20 +5,12 @@ namespace SteamBattleBot.Structures
     class EnemyStructure
     {
         private Random _random = new Random();
-<<<<<<< HEAD
         public int hp,
                     coins,
                     points,
                     classRandom,
                     exp,
                     charge;
-=======
-        public int hp, 
-                   coins, 
-                   points,
-                   classRandom, 
-                   exp;
->>>>>>> origin/master
 
         public string type;
 

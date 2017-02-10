@@ -16,7 +16,6 @@ namespace SteamBattleBot.Structures
 
         public bool shopMode = false;
 
-<<<<<<< HEAD
         private int hp,
                     coins,
                     hitChance,
@@ -30,22 +29,6 @@ namespace SteamBattleBot.Structures
                     charge,
                     cooldown;
 
-
-
-=======
-        private int hp, 
-                    coins, 
-                    hitChance, 
-                    damageDone, 
-                    skillPoints,
-                    damageTaken, 
-                    damageMultiplier, 
-                    maxHp, 
-                    level, 
-                    exp;
-
-
->>>>>>> origin/master
         public void SetupGame()
         {
             enemy.Reset();
@@ -275,7 +258,7 @@ namespace SteamBattleBot.Structures
                 }
             }
         }
-        #endregion
+
 
         #region Block the attacks
         public void Block(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
@@ -1055,12 +1038,8 @@ namespace SteamBattleBot.Structures
 
         public void Stats(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
-<<<<<<< HEAD
             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Stats\nMax HP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nDamage Increased: +{5}", maxHp, level, exp, coins, skillPoints, damageMultiplier));
         }
-=======
-            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Stats\nMax HP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}", maxHp, level, exp, coins, skillPoints));
->>>>>>> origin/master
 
         #region Check if battle is won/game over.
         private bool HpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
@@ -1151,11 +1130,7 @@ namespace SteamBattleBot.Structures
             {
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg,
                     string.Format(
-<<<<<<< HEAD
                     "\nWelcome to the shop! You got {0} coins and " +skillPoints+ " points\n", coins) +
-=======
-                    "\nWelcome to the shop! You got {0} coins and " + skillPoints + " points\n", coins) +
->>>>>>> origin/master
                     "1. Heal 5 hp: 3 coins\n" +
                     "2. Heal 10 hp: 5 coins\n" +
                     "3. Insta-kill: 10 coins\n" +
