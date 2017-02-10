@@ -26,8 +26,11 @@ Command | Action
 `!stats` | Used to view your stats.
 `!shop` | Used to open the shop.
 `!help` | Display commands.
-`!changelog` | W.I.P
+`!changelog` | Shows the latest changelog.
 `!shutdown` | Used to shut down the bot (Admin only).
+`!message [message]` | Message all the users that have friended the bot (Admin only).
+`!changename [name]` | Change the name of the bot (Admin only).
+`!debug [setting]` | Enable/Disable debug settings (Admin only).
 `!resetadmins` | Recheck admin.txt for new admins (Admin only).
 
 ### Features
