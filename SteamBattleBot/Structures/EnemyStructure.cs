@@ -8,7 +8,6 @@ namespace SteamBattleBot.Structures
         public int hp,
                     coins,
                     points,
-                    classRandom,
                     exp,
                     charge;
 
@@ -18,13 +17,12 @@ namespace SteamBattleBot.Structures
         {
             coins = _random.Next(2, 5);
             points = _random.Next(1, 2);
-            classRandom = _random.Next(0, 4);
-            switch (classRandom)
+            switch (_random.Next(0, 4))
             {
                 case 0:
                     hp = _random.Next(40, 50);
                     exp = _random.Next(5, 10);
-                    type = "Gabe Clone";
+                    type = "Gaben Clone";
                     break;
                 case 1:
                     hp = _random.Next(10, 20);

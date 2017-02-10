@@ -56,7 +56,7 @@ namespace SteamBattleBot.Structures
                 }
                 else
                 {
-                    if (enemy.classRandom == 0)
+                    if (enemy.type == "Gaben Clone")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 7);
@@ -87,7 +87,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 1)
+                    else if (enemy.type == "Steam Bot")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 7);
@@ -118,7 +118,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 2)
+                    else if (enemy.type == "Steam Mod")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 7);
@@ -149,7 +149,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 3)
+                    else if (enemy.type == "Steam Admin")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 7);
@@ -193,20 +193,19 @@ namespace SteamBattleBot.Structures
         public void Block(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
-            {
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You must exit the shop! Type !shop to exit!");
-            }
             else
             {
                 if (hp <= 0) //Stops the user from attacking if below 0 HP
                 {
                     steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You cannot block anymore! Type !restart to start a new game!");
+                    return;
                 }
 
                 #region Checks if Enemy is charging attack
                 else if (enemy.charge == 1)
                 {
-                    if (enemy.classRandom == 0)
+                    if (enemy.type == "Gaben Clone")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 5);
@@ -231,7 +230,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 1)
+                    else if (enemy.type == "Steam Bot")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 5);
@@ -255,7 +254,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 2)
+                    else if (enemy.type == "Steam Mod")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 5);
@@ -279,7 +278,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 3)
+                    else if (enemy.type == "Steam Admin")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 5);
@@ -314,7 +313,7 @@ namespace SteamBattleBot.Structures
                   
                 else
                 {
-                    if (enemy.classRandom == 0)
+                    if (enemy.type == "Gaben Clone")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 5);
@@ -334,7 +333,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 1)
+                    else if (enemy.type == "Steam Bot")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 5);
@@ -354,7 +353,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 2)
+                    else if (enemy.type == "Steam Mod")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 5);
@@ -374,7 +373,7 @@ namespace SteamBattleBot.Structures
                         HpCheck(callback, steamFriends);
                         State(callback, steamFriends);
                     }
-                    else if (enemy.classRandom == 3)
+                    else if (enemy.type == "Steam Admin")
                     {
                         #region Miss/Hit checker
                         hitChance = _random.Next(1, 5);
@@ -404,7 +403,6 @@ namespace SteamBattleBot.Structures
         }
         #endregion
 
-
         #region Special attacks
         public void Special(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
@@ -423,7 +421,7 @@ namespace SteamBattleBot.Structures
                     #region Starting to charge
                     if (cooldown >= 1)
                     {
-                        if (enemy.classRandom == 0)
+                        if (enemy.type == "Gaben Clone")
                         {
                                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have to wait before using a special attack again!");
                                 cooldown -= 1;
@@ -460,7 +458,7 @@ namespace SteamBattleBot.Structures
                             HpCheck(callback, steamFriends);
                             State(callback, steamFriends);
                         }
-                        else if (enemy.classRandom == 1)
+                        else if (enemy.type == "Steam Bot")
                         {
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have to wait before using a special attack again!");
                             cooldown -= 1;
@@ -497,7 +495,7 @@ namespace SteamBattleBot.Structures
                             HpCheck(callback, steamFriends);
                             State(callback, steamFriends);
                         }
-                        else if (enemy.classRandom == 2)
+                        else if (enemy.type == "Steam Mod")
                         {
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have to wait before using a special attack again!");
                             cooldown -= 1;
@@ -534,7 +532,7 @@ namespace SteamBattleBot.Structures
                             HpCheck(callback, steamFriends);
                             State(callback, steamFriends);
                         }
-                        else if (enemy.classRandom == 3)
+                        else if (enemy.type == "Steam Admin")
                         {
                             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have to wait before using a special attack again!");
                             cooldown -= 1;
@@ -579,7 +577,7 @@ namespace SteamBattleBot.Structures
                     {
                         if (charge == 0)
                         {
-                            if (enemy.classRandom == 0)
+                            if (enemy.type == "Gaben Clone")
                             {
                                 #region Miss/Hit checker
                                 hitChance = _random.Next(1, 4);
@@ -602,7 +600,7 @@ namespace SteamBattleBot.Structures
                                 HpCheck(callback, steamFriends);
                                 State(callback, steamFriends);
                             }
-                            else if (enemy.classRandom == 1)
+                            else if (enemy.type == "Steam Bot")
                             {
                                 #region Miss/Hit checker
                                 hitChance = _random.Next(1, 4);
@@ -625,7 +623,7 @@ namespace SteamBattleBot.Structures
                                 HpCheck(callback, steamFriends);
                                 State(callback, steamFriends);
                             }
-                            else if (enemy.classRandom == 2)
+                            else if (enemy.type == "Steam Mod")
                             {
                                 #region Miss/Hit checker
                                 hitChance = _random.Next(1, 4);
@@ -648,7 +646,7 @@ namespace SteamBattleBot.Structures
                                 HpCheck(callback, steamFriends);
                                 State(callback, steamFriends);
                             }
-                            else if (enemy.classRandom == 3)
+                            else if (enemy.type == "Steam Admin")
                             {
                                 #region Miss/Hit checker
                                 hitChance = _random.Next(1, 4);
@@ -680,7 +678,7 @@ namespace SteamBattleBot.Structures
                         #region Charge #1 Attack
                         else if (charge == 1)
                         {
-                            if (enemy.classRandom == 0)
+                            if (enemy.type == "Gaben Clone")
                             {
                                 #region Miss/Hit checker
                                 hitChance = _random.Next(1, 5);
@@ -734,7 +732,7 @@ namespace SteamBattleBot.Structures
                                 HpCheck(callback, steamFriends);
                                 State(callback, steamFriends);
                             }
-                            else if (enemy.classRandom == 1)
+                            else if (enemy.type == "Steam Bot")
                             {
                                 #region Miss/Hit checker
                                 hitChance = _random.Next(1, 5);
@@ -787,7 +785,7 @@ namespace SteamBattleBot.Structures
                                 HpCheck(callback, steamFriends);
                                 State(callback, steamFriends);
                             }
-                            else if (enemy.classRandom == 2)
+                            else if (enemy.type == "Steam Mod")
                             {
                                 #region Miss/Hit checker
                                 hitChance = _random.Next(1, 5);
@@ -840,7 +838,7 @@ namespace SteamBattleBot.Structures
                                 HpCheck(callback, steamFriends);
                                 State(callback, steamFriends);
                             }
-                            else if (enemy.classRandom == 3)
+                            else if (enemy.type == "Steam Admin")
                             {
                                 #region Miss/Hit checker
                                 hitChance = _random.Next(1, 5);
@@ -905,7 +903,7 @@ namespace SteamBattleBot.Structures
         #region Check the status of the enemy
         public void State(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
-            if (enemy.classRandom == 1)
+            if (enemy.type == "Steam Bot")
             {
                 if (!shopMode)
                 { 
@@ -913,7 +911,7 @@ namespace SteamBattleBot.Structures
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Steam Bot have {0} HP!", enemy.hp));
                 }
             }
-            else if (enemy.classRandom == 0)
+            else if (enemy.type == "Gaben Clone")
             {
                 if (!shopMode)
                 {
@@ -921,7 +919,7 @@ namespace SteamBattleBot.Structures
                     steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Gaben Clone have {0} HP!", enemy.hp));
                 }
             }
-            else if (enemy.classRandom == 2)
+            else if (enemy.type == "Steam Mod")
             {
                 if (!shopMode)
                 {
@@ -929,7 +927,7 @@ namespace SteamBattleBot.Structures
                     steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Steam Mod have {0} HP!", enemy.hp));
                 }
             }
-            else if (enemy.classRandom == 3)
+            else if (enemy.type == "Steam Admin")
             {
                 if (!shopMode)
                 {
@@ -967,7 +965,7 @@ namespace SteamBattleBot.Structures
         #region Check if battle is won/game over.
         private bool HpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
-            if (enemy.classRandom == 1)
+            if (enemy.type == "Steam Bot")
             {
                 if (hp <= 0)
                 {
@@ -985,7 +983,7 @@ namespace SteamBattleBot.Structures
                     return true;
                 }
             }
-            else if (enemy.classRandom == 0)
+            else if (enemy.type == "Gaben Clone")
             {
                 if (hp <= 0)
                 {
@@ -1003,7 +1001,7 @@ namespace SteamBattleBot.Structures
                     return true;
                 }
             }
-            else if (enemy.classRandom == 2)
+            else if (enemy.type == "Steam Mod")
             {
                 if (hp <= 0)
                 {
@@ -1021,7 +1019,7 @@ namespace SteamBattleBot.Structures
                     return true;
                 }
             }
-            else if (enemy.classRandom == 3)
+            else if (enemy.type == "Steam Admin")
             {
                 if (hp <= 0)
                 {
