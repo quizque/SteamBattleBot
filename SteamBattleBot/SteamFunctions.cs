@@ -276,7 +276,7 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
-                        #region !debug [arg] (Admin only)
+                        #region !debug [setting] (Admin only)
                         case "!debug":
                             if (!IsBotAdmin(callBack.Sender))
                             {
@@ -418,6 +418,25 @@ namespace SteamBattleBot
                                     Log(string.Format("!stats command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                                     player.Stats(callBack, steamFriends);
                                 }
+                            }
+                            break;
+                        #endregion
+
+                        #region !message [message] (Admin only)
+                        case "!message": //!message (message)
+                            if (!IsBotAdmin(callBack.Sender))
+                                break;
+                            Log("!message command recived. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
+                            args = Seperate(1, ' ', callBack.Message);
+                            if (args[0] == "-1")
+                            {
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Command syntax: !message (message)");
+                                return;
+                            }
+                            for (int i = 0; i < steamFriends.GetFriendCount(); i++)
+                            {
+                                SteamID friend = steamFriends.GetFriendByIndex(i);
+                                steamFriends.SendChatMessage(friend, EChatEntryType.ChatMsg, args[1]);
                             }
                             break;
                         #endregion
