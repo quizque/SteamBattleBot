@@ -329,18 +329,6 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
-                        #region !special
-                        case "!special":
-                            foreach (Structures.PlayerStructure player in players) // Loop the list
-                            {
-                                if (player.id == callBack.Sender.AccountID)
-                                {
-                                    player.special(callBack, steamFriends);
-                                }
-                            }
-                            break;
-                        #endregion
-
                         #region !block
                         case "!block":
                             foreach (Structures.PlayerStructure player in players) // Loop the list
@@ -386,7 +374,7 @@ namespace SteamBattleBot
                         #region !help
                         case "!help":
                             Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!block\n!special\n!setup\n!stats\n!shop\n!changelog\n!shutdown(admin only)\n!resetadmins(admin only)");
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!block\n!setup\n!stats\n!shop\n!changelog\n!shutdown(admin only)\n!resetadmins(admin only)");
                             break;
                         #endregion
                     }
