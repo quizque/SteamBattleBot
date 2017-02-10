@@ -187,7 +187,7 @@ namespace SteamBattleBot.Structures
                 }
             }
         }
-
+        #endregion
 
         #region Block the attacks
         public void Block(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
@@ -399,12 +399,13 @@ namespace SteamBattleBot.Structures
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Something is wrong with the bot. Please contact the owner of the bot."));
                     }
                 }
+                #endregion
             }
         }
         #endregion
 
 
-#region Special attacks
+        #region Special attacks
         public void Special(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)

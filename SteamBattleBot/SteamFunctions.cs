@@ -15,7 +15,7 @@ namespace SteamBattleBot
         SteamFriends steamFriends;
 
 
-        bool isRunning;
+        bool isRunning, logCommands = false;
 
         public string user,
                       pass;
@@ -209,7 +209,7 @@ namespace SteamBattleBot
 
         void OnChatMessage(SteamFriends.FriendMsgCallback callBack)
         {
-            //string[] args; UNCOMMECT WHEN BETTER SETUP IS ADDED!
+            string[] args;
             if (callBack.EntryType == EChatEntryType.ChatMsg)
             {
             if (callBack.Message.Length > 1 && callBack.Message.Remove(1) == "!")
@@ -219,6 +219,12 @@ namespace SteamBattleBot
                     {
                         command = callBack.Message.Remove(callBack.Message.IndexOf(" "));
                     }
+
+                    // To use the args system use the following formate in the command
+                    // args = seperate((amount of args it should have. example: 1), ' ', callBack.Message);
+                    // It will return a list of the args; 0 being the command and 1, 2, etc being the args
+                    // If their is no args found it will return -1 in slot [0] so make sure to use an if
+                    //  statement to check if their is more then one arg if your command uses it
 
                     switch (command)
                     {
@@ -242,6 +248,7 @@ namespace SteamBattleBot
                             }
                             try
                             {
+                                Log(string.Format("!resetadmins command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Rechecking admin.txt...");
 
                                 lines = File.ReadAllLines("admin.txt"); // Read all the SteamID64s in the file
@@ -269,6 +276,32 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
+                        #region !debug [arg] (Admin only)
+                        case "!debug":
+                            if (!IsBotAdmin(callBack.Sender))
+                            {
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
+                                break;
+                            }
+                            args = Seperate(1, ' ', callBack.Message);
+                            if (args[0] == "-1")
+                            {
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Command syntax: !debug (setting)");
+                                return;
+                            }
+                            
+
+                            if (args[1] == "logcommands")
+                            {
+                                logCommands = !logCommands;
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, string.Format("Debug mode logchat: {0}", logCommands ? "Enabled" : "Disabled"));
+                            }
+
+                            Log(string.Format("!log {0} command recived. User: {1}", args[1], steamFriends.GetFriendPersonaName(callBack.Sender)));
+
+                            break;
+                        #endregion
+
                         #region !setup
                         case "!setup":
                             playerCount = players.Count;
@@ -282,7 +315,7 @@ namespace SteamBattleBot
                                 }
                             }
                             steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
-                        
+                            Log(string.Format("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
 
                             players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
 
@@ -306,7 +339,7 @@ namespace SteamBattleBot
 
                                 if (players[i].id == callBack.Sender.AccountID)
                                 {
-                                    Console.WriteLine("!restart command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
+                                    Log(string.Format("!restart command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                                     steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Restarting game...");
                                     players[i].SetupGame();
                                     return;
@@ -323,12 +356,12 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
+                                    Log(string.Format("!attack command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                                     player.Attack(callBack, steamFriends);
                                 }
                             }
                             break;
                         #endregion
-
 
                         #region !special
                         case "!special":
@@ -336,12 +369,12 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
+                                    Log(string.Format("!special command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                                     player.Special(callBack, steamFriends);
                                 }
                             }
                             break;
                         #endregion
-
 
                         #region !block
                         case "!block":
@@ -349,6 +382,7 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
+                                    Log(string.Format("!block command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                                     player.Block(callBack, steamFriends);
                                 }
                             }
@@ -357,6 +391,7 @@ namespace SteamBattleBot
 
                         #region !changelog
                         case "!changelog":
+                            Log(string.Format("!changelog command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                             steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Changelog:\nAdded Changelog\nBalanced HP and Damage on Enemies\nAdded !block cmd for blocking attacks\nMinor Code fixes");
                             break;
                         #endregion
@@ -367,6 +402,7 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
+                                    Log(string.Format("!shop command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                                     player.DisplayShop(callBack, steamFriends);
                                 }
                             }
@@ -379,6 +415,7 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
+                                    Log(string.Format("!stats command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                                     player.Stats(callBack, steamFriends);
                                 }
                             }
@@ -387,7 +424,7 @@ namespace SteamBattleBot
 
                         #region !help
                         case "!help":
-                            Console.WriteLine("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
+                            Log(string.Format("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
                             steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!block\n!setup\n!stats\n!shop\n!changelog\n!shutdown(admin only)\n!resetadmins(admin only)");
                             break;
                         #endregion
@@ -415,7 +452,7 @@ namespace SteamBattleBot
             // If their ID was not found, tell the user
             steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "You are not a bot admin.");
             // And put the message in console
-            Console.WriteLine(steamFriends.GetFriendPersonaName(sid) + " attempted to use an administrator command while not an administrator.");
+            Log(string.Format("{0} attempted to use an administrator command while not an administrator.", steamFriends.GetFriendPersonaName(sid)));
             return false;
         }
 
@@ -503,6 +540,12 @@ namespace SteamBattleBot
                 }
                 return pass;
             }
+        }
+
+        public void Log(string command)
+        {
+            if (logCommands)
+                Console.WriteLine(DateTime.Now.ToString("[hh:mm:ss] ") + command);
         }
     }
 }
