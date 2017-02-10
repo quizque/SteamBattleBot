@@ -16,17 +16,28 @@ namespace SteamBattleBot.Structures
 
         public bool shopMode = false;
 
-        private int hp, coins, hitChance, damageDone, points, damageTaken, damageMultiplier, maxhp, level, exp, charge, cooldown;
+        private int hp,
+                    coins,
+                    hitChance,
+                    damageDone,
+                    skillPoints,
+                    damageTaken,
+                    damageMultiplier,
+                    maxHp,
+                    level,
+                    exp,
+                    charge,
+                    cooldown;
 
 
 
-        public void setupGame()
+        public void SetupGame()
         {
             enemy.Reset();
-            maxhp = 50;
+            maxHp = 50;
             hp = 50;
             coins = 5;
-            points = 0;
+            skillPoints = 0;
             damageMultiplier = 0;
             level = 1;
             exp = 0;
@@ -35,7 +46,7 @@ namespace SteamBattleBot.Structures
         }
 
         #region Attack and Check which monster to attack
-        public void attack(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        public void Attack(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
             {
@@ -94,8 +105,8 @@ namespace SteamBattleBot.Structures
                             }
                         }
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 1)
                     {
@@ -143,8 +154,8 @@ namespace SteamBattleBot.Structures
                         }
 
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 2)
                     {
@@ -190,8 +201,8 @@ namespace SteamBattleBot.Structures
                             }
                         }
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 3)
                     {
@@ -248,7 +259,7 @@ namespace SteamBattleBot.Structures
         #endregion
 
         #region Block the attacks
-        public void block(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        public void Block(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
             {
@@ -285,8 +296,8 @@ namespace SteamBattleBot.Structures
                         }
                         #endregion
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 1)
                     {
@@ -309,8 +320,8 @@ namespace SteamBattleBot.Structures
                         }
                         #endregion
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 2)
                     {
@@ -333,8 +344,8 @@ namespace SteamBattleBot.Structures
                         }
                         #endregion
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 3)
                     {
@@ -358,8 +369,8 @@ namespace SteamBattleBot.Structures
                         }
                         #endregion
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else
                     {
@@ -390,8 +401,8 @@ namespace SteamBattleBot.Structures
                         }
                         #endregion
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 1)
                     {
@@ -412,8 +423,8 @@ namespace SteamBattleBot.Structures
                         }
                         #endregion
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 2)
                     {
@@ -434,8 +445,8 @@ namespace SteamBattleBot.Structures
                         }
                         #endregion
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else if (enemy.classRandom == 3)
                     {
@@ -456,8 +467,8 @@ namespace SteamBattleBot.Structures
                         }
                         #endregion
 
-                        hpCheck(callback, steamFriends);
-                        state(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else
                     {
@@ -470,7 +481,7 @@ namespace SteamBattleBot.Structures
         #endregion
 
 #region Special attacks
-        public void special(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        public void Special(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
             {
@@ -521,8 +532,8 @@ namespace SteamBattleBot.Structures
                             }
                             #endregion
 
-                            hpCheck(callback, steamFriends);
-                            state(callback, steamFriends);
+                            HpCheck(callback, steamFriends);
+                            State(callback, steamFriends);
                         }
                         else if (enemy.classRandom == 1)
                         {
@@ -558,8 +569,8 @@ namespace SteamBattleBot.Structures
                             }
                             #endregion
 
-                            hpCheck(callback, steamFriends);
-                            state(callback, steamFriends);
+                            HpCheck(callback, steamFriends);
+                            State(callback, steamFriends);
                         }
                         else if (enemy.classRandom == 2)
                         {
@@ -595,8 +606,8 @@ namespace SteamBattleBot.Structures
                             }
                             #endregion
 
-                            hpCheck(callback, steamFriends);
-                            state(callback, steamFriends);
+                            HpCheck(callback, steamFriends);
+                            State(callback, steamFriends);
                         }
                         else if (enemy.classRandom == 3)
                         {
@@ -663,8 +674,8 @@ namespace SteamBattleBot.Structures
                                 }
                                 #endregion
 
-                                hpCheck(callback, steamFriends);
-                                state(callback, steamFriends);
+                                HpCheck(callback, steamFriends);
+                                State(callback, steamFriends);
                             }
                             else if (enemy.classRandom == 1)
                             {
@@ -686,8 +697,8 @@ namespace SteamBattleBot.Structures
                                 }
                                 #endregion
 
-                                hpCheck(callback, steamFriends);
-                                state(callback, steamFriends);
+                                HpCheck(callback, steamFriends);
+                                State(callback, steamFriends);
                             }
                             else if (enemy.classRandom == 2)
                             {
@@ -709,8 +720,8 @@ namespace SteamBattleBot.Structures
                                 }
                                 #endregion
 
-                                hpCheck(callback, steamFriends);
-                                state(callback, steamFriends);
+                                HpCheck(callback, steamFriends);
+                                State(callback, steamFriends);
                             }
                             else if (enemy.classRandom == 3)
                             {
@@ -732,8 +743,8 @@ namespace SteamBattleBot.Structures
                                 }
                                 #endregion
 
-                                hpCheck(callback, steamFriends);
-                                state(callback, steamFriends);
+                                HpCheck(callback, steamFriends);
+                                State(callback, steamFriends);
                             }
                             else
                             {
@@ -795,8 +806,8 @@ namespace SteamBattleBot.Structures
                                 }
                                 #endregion
 
-                                hpCheck(callback, steamFriends);
-                                state(callback, steamFriends);
+                                HpCheck(callback, steamFriends);
+                                State(callback, steamFriends);
                             }
                             else if (enemy.classRandom == 1)
                             {
@@ -848,8 +859,8 @@ namespace SteamBattleBot.Structures
                                 }
                                 #endregion
 
-                                hpCheck(callback, steamFriends);
-                                state(callback, steamFriends);
+                                HpCheck(callback, steamFriends);
+                                State(callback, steamFriends);
                             }
                             else if (enemy.classRandom == 2)
                             {
@@ -901,8 +912,8 @@ namespace SteamBattleBot.Structures
                                 }
                                 #endregion
 
-                                hpCheck(callback, steamFriends);
-                                state(callback, steamFriends);
+                                HpCheck(callback, steamFriends);
+                                State(callback, steamFriends);
                             }
                             else if (enemy.classRandom == 3)
                             {
@@ -968,7 +979,7 @@ namespace SteamBattleBot.Structures
 
 
         #region Check the status of the enemy
-        public void state(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        public void State(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (enemy.classRandom == 1)
             {
@@ -1015,19 +1026,19 @@ namespace SteamBattleBot.Structures
             {
                 level += 1;
                 coins += 15;
-                points += 5;
+                skillPoints += 5;
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Congrats, you are level {0} and earned 15 coins and 5 points!", level));
                 exp = 0;
             }
         }
 
-        public void stats(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        public void Stats(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
-            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Stats\nMax HP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nDamage Increased: +{5}", maxhp, level, exp, coins, points, damageMultiplier));
+            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Stats\nMax HP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nDamage Increased: +{5}", maxHp, level, exp, coins, skillPoints, damageMultiplier));
         }
 
         #region Check if battle is won/game over.
-        private bool hpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        private bool HpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (enemy.classRandom == 1)
             {
@@ -1057,7 +1068,7 @@ namespace SteamBattleBot.Structures
                 else if (enemy.hp <= 0)
                 {
                     steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You killed the Gaben Clone! He dropped {0} skill points and you earned {1} XP. Making new enemy...", enemy.points, enemy.exp));
-                    points += enemy.points;
+                    skillPoints += enemy.points;
                     exp += enemy.exp;
                     hp += _random.Next(1, 6);
                     enemy.Reset();
@@ -1109,13 +1120,13 @@ namespace SteamBattleBot.Structures
         }
         #endregion
 
-        public void displayShop(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        public void DisplayShop(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (!shopMode)
             {
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg,
                     string.Format(
-                    "\nWelcome to the shop! You got {0} coins and " +points+ " points\n", coins) +
+                    "\nWelcome to the shop! You got {0} coins and " +skillPoints+ " points\n", coins) +
                     "1. Heal 5 hp: 3 coins\n" +
                     "2. Heal 10 hp: 5 coins\n" +
                     "3. Insta-kill: 10 coins\n" +
@@ -1131,13 +1142,13 @@ namespace SteamBattleBot.Structures
             }
         }
 
-        public void processShop(string item, SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        public void ProcessShop(string item, SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             switch (item)
             {
                 #region Heal 5
                 case "1":
-                    if (hp < maxhp)
+                    if (hp < maxHp)
                     {
                         if (coins >= 3)
                         {
@@ -1160,7 +1171,7 @@ namespace SteamBattleBot.Structures
 
                 #region Heal 10
                 case "2":
-                    if (hp < maxhp)
+                    if (hp < maxHp)
                     {
                         if (coins >= 5)
                         {
@@ -1190,7 +1201,7 @@ namespace SteamBattleBot.Structures
                         shopMode = false;
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "Insta-killing enemy...");
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have " + coins + " coins left.");
-                        hpCheck(callback, steamFriends);
+                        HpCheck(callback, steamFriends);
                     }
                     else
                     {
@@ -1201,32 +1212,32 @@ namespace SteamBattleBot.Structures
 
                 #region Damage Increase
                 case "4":
-                    if (points >= 1)
+                    if (skillPoints >= 1)
                     {
-                        points -= 1;
+                        skillPoints -= 1;
                         damageMultiplier += 3;
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You increased your damage.");
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have " + points + " points left.");
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have " + skillPoints + " points left.");
                     }
                     else
                     {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You don't have enough points. You only have " + points + " points in your wallet.");
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You don't have enough points. You only have " + skillPoints + " points in your wallet.");
                     }
                     break;
                 #endregion
 
                 #region HP Increase
                 case "5":
-                    if (points >= 1)
+                    if (skillPoints >= 1)
                     {
-                        points -= 1;
-                        maxhp += 10;
+                        skillPoints -= 1;
+                        maxHp += 10;
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You increased your HP by 10.");
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have " + points + " points left.");
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have " + skillPoints + " points left.");
                     }
                     else
                     {
-                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You don't have enough points. You only have " + points + " points in your wallet.");
+                        steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You don't have enough points. You only have " + skillPoints + " points in your wallet.");
                     }
                     break;
                     #endregion

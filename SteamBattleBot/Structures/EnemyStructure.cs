@@ -10,13 +10,14 @@ namespace SteamBattleBot.Structures
     class EnemyStructure
     {
         private Random _random = new Random();
-        public int hp;
-        public int coins;
-        public int points;
-        public int classRandom;
-        public int exp;
+        public int hp,
+                    coins,
+                    points,
+                    classRandom,
+                    exp,
+                    charge;
+
         public string type;
-        public int charge;
 
         public void Reset()
         {

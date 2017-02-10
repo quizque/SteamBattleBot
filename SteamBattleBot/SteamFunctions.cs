@@ -17,8 +17,9 @@ namespace SteamBattleBot
 
         bool isRunning;
 
-        public string user, pass;
-
+        public string user,
+                      pass;
+        
         string[] lines;
 
         string authCode, twoFactorAuth;
@@ -223,7 +224,7 @@ namespace SteamBattleBot
                     {
                         #region !shutdown (Admin only)
                         case "!shutdown":
-                            if (!isBotAdmin(callBack.Sender))
+                            if (!IsBotAdmin(callBack.Sender))
                             {
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
                                 break;
@@ -234,7 +235,7 @@ namespace SteamBattleBot
 
                         #region !resetadmins (Admin only)
                         case "!resetadmins":
-                            if (!isBotAdmin(callBack.Sender))
+                            if (!IsBotAdmin(callBack.Sender))
                             {
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !resetadmins command!");
                                 break;
@@ -289,7 +290,7 @@ namespace SteamBattleBot
                             {
                                 if (callBack.Sender.AccountID == players[i].id)
                                 {
-                                    players[i].setupGame();
+                                    players[i].SetupGame();
                                 }
                             }
 
@@ -307,7 +308,7 @@ namespace SteamBattleBot
                                 {
                                     Console.WriteLine("!restart command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
                                     steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Restarting game...");
-                                    players[i].setupGame();
+                                    players[i].SetupGame();
                                     return;
                                 }
                             }
@@ -315,14 +316,14 @@ namespace SteamBattleBot
                             break;
 
                         #endregion
-
+                       
                         #region !attack
                         case "!attack":
                             foreach (Structures.PlayerStructure player in players) // Loop the list
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
-                                    player.attack(callBack, steamFriends);
+                                    player.Attack(callBack, steamFriends);
                                 }
                             }
                             break;
@@ -334,7 +335,7 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
-                                    player.special(callBack, steamFriends);
+                                    player.Special(callBack, steamFriends);
                                 }
                             }
                             break;
@@ -346,7 +347,7 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
-                                    player.block(callBack, steamFriends);
+                                    player.Block(callBack, steamFriends);
                                 }
                             }
                             break;
@@ -364,7 +365,7 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
-                                    player.displayShop(callBack, steamFriends);
+                                    player.DisplayShop(callBack, steamFriends);
                                 }
                             }
                             break;
@@ -376,7 +377,7 @@ namespace SteamBattleBot
                             {
                                 if (player.id == callBack.Sender.AccountID)
                                 {
-                                    player.stats(callBack, steamFriends);
+                                    player.Stats(callBack, steamFriends);
                                 }
                             }
                             break;
@@ -394,13 +395,13 @@ namespace SteamBattleBot
                 {
                     if (player.id == callBack.Sender.AccountID && callBack.Message.Length == 1 && player.shopMode == true)
                     {
-                        player.processShop(callBack.Message, callBack, steamFriends);
+                        player.ProcessShop(callBack.Message, callBack, steamFriends);
                     }
                 }
             }
         }
 
-        bool isBotAdmin(SteamID sid, bool refresh = false)
+        bool IsBotAdmin(SteamID sid, bool refresh = false)
         {
             foreach (ulong id in admins) // Loop the list
             {
@@ -432,7 +433,7 @@ namespace SteamBattleBot
             }
         }
 
-        string[] seperate(int number, char seperator, string thestring)
+        string[] Seperate(int number, char seperator, string thestring)
         {
             string[] returned = new string[4];
 
@@ -471,7 +472,7 @@ namespace SteamBattleBot
             return returned;
         }
 
-        public string inputPass()
+        public string InputPass()
         {
             {
                 string pass = "";
