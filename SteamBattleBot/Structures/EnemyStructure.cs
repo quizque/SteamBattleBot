@@ -16,12 +16,14 @@ namespace SteamBattleBot.Structures
         public int classRandom;
         public int exp;
         public string type;
+        public int charge;
 
         public void Reset()
         {
             coins = _random.Next(2, 5);
             points = _random.Next(1, 2);
             classRandom = _random.Next(0, 4);
+            charge = 0;
             switch (classRandom)
             {
                 case 0:
