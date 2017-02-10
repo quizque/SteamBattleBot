@@ -16,6 +16,7 @@ namespace SteamBattleBot.Structures
 
         public bool shopMode = false;
 
+<<<<<<< HEAD
         private int hp,
                     coins,
                     hitChance,
@@ -31,6 +32,20 @@ namespace SteamBattleBot.Structures
 
 
 
+=======
+        private int hp, 
+                    coins, 
+                    hitChance, 
+                    damageDone, 
+                    skillPoints,
+                    damageTaken, 
+                    damageMultiplier, 
+                    maxHp, 
+                    level, 
+                    exp;
+
+
+>>>>>>> origin/master
         public void SetupGame()
         {
             enemy.Reset();
@@ -246,7 +261,11 @@ namespace SteamBattleBot.Structures
                                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("The Steam Admin bans you for trading for {0} damage!", damageTaken));
                             }
                         }
-                     
+
+                        #endregion
+
+                        HpCheck(callback, steamFriends);
+                        State(callback, steamFriends);
                     }
                     else
                     {
@@ -1017,10 +1036,11 @@ namespace SteamBattleBot.Structures
             {
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Something is wrong with the bot. Please contact the owner of the bot."));
             }
-        }
+        } // Same as State?
         #endregion
 
-        private void levelup(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        #region Check to see if the player can level up
+        private void LevelUp(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (exp == 50)
             {
@@ -1031,11 +1051,16 @@ namespace SteamBattleBot.Structures
                 exp = 0;
             }
         }
+        #endregion
 
         public void Stats(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
+<<<<<<< HEAD
             steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Stats\nMax HP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nDamage Increased: +{5}", maxHp, level, exp, coins, skillPoints, damageMultiplier));
         }
+=======
+            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Stats\nMax HP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}", maxHp, level, exp, coins, skillPoints));
+>>>>>>> origin/master
 
         #region Check if battle is won/game over.
         private bool HpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
@@ -1126,7 +1151,11 @@ namespace SteamBattleBot.Structures
             {
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg,
                     string.Format(
+<<<<<<< HEAD
                     "\nWelcome to the shop! You got {0} coins and " +skillPoints+ " points\n", coins) +
+=======
+                    "\nWelcome to the shop! You got {0} coins and " + skillPoints + " points\n", coins) +
+>>>>>>> origin/master
                     "1. Heal 5 hp: 3 coins\n" +
                     "2. Heal 10 hp: 5 coins\n" +
                     "3. Insta-kill: 10 coins\n" +
