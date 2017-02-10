@@ -426,13 +426,13 @@ namespace SteamBattleBot
                         case "!message": //!message (message)
                             if (!IsBotAdmin(callBack.Sender))
                                 break;
-                            Log("!message command recived. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
                             args = Seperate(1, ' ', callBack.Message);
                             if (args[0] == "-1")
                             {
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Command syntax: !message (message)");
                                 return;
                             }
+                            Log("!message command recived. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
                             for (int i = 0; i < steamFriends.GetFriendCount(); i++)
                             {
                                 SteamID friend = steamFriends.GetFriendByIndex(i);
@@ -441,10 +441,38 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
+                        #region !changename [name] (Admin only)
+                        case "!changename":
+                            if (!IsBotAdmin(callBack.Sender))
+                                return;
+                            args = Seperate(1, ' ', callBack.Message);
+                            Log("!changename " + args[1] + " command recieved. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
+                            if (args[0] == "-1")
+                            {
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Syntax: !changename [name]");
+                                return;
+                            }
+                            steamFriends.SetPersonaName(args[1]);
+                            break;
+                        #endregion
+
                         #region !help
                         case "!help":
                             Log(string.Format("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "\nThe current commands are:\n!help\n!attack\n!block\n!setup\n!stats\n!shop\n!changelog\n!shutdown(admin only)\n!resetadmins(admin only)");
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, 
+                                "\nThe current commands are:\n"+
+                                "!help\n"+
+                                "!attack\n"+
+                                "!block\n"+
+                                "!setup\n"+
+                                "!stats\n"+
+                                "!shop\n"+
+                                "!changelog\n"+
+                                "!shutdown (admin only)\n"+
+                                "!message [message] (admin only)\n" +
+                                "!changename [name] (admin only)\n" +
+                                "!debug [setting] (admin only)\n" +
+                                "!resetadmins (admin only)");
                             break;
                         #endregion
                     }
