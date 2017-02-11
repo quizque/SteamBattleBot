@@ -47,5 +47,6 @@ Command | Action
 ### Libraries used
 - [Fody.Costura](https://github.com/Fody/Costura) for packaging the DLLs.
 - [SteamKit2](https://github.com/SteamRE/SteamKit) for handling steam requests.
+- [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) for parsing and generating JSON
 
 This project is licensed under the terms of the MIT license.

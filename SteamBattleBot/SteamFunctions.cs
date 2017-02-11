@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading;
 using System.Security.Cryptography;
 using System.Collections.Generic;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace SteamBattleBot
 {
@@ -26,6 +28,8 @@ namespace SteamBattleBot
         byte[] sentryHash;
 
         int playerCount = 0;
+
+        string[] lastCommits = new string[5];
 
         Random _random = new Random();
 
@@ -52,6 +56,34 @@ namespace SteamBattleBot
             manager.Subscribe<SteamFriends.FriendsListCallback>(OnFriendsAdded);
 
             manager.Subscribe<SteamUser.UpdateMachineAuthCallback>(OnMachineAuth);
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+
+                    client.DefaultRequestHeaders.Add("User-Agent",
+                    "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
+
+                    using (var response = client.GetAsync("https://api.github.com/repos/nickthegamer5/SteamBattleBot/commits").Result)
+                    {
+                        var json = response.Content.ReadAsStringAsync().Result;
+
+                        dynamic commits = JArray.Parse(json);
+                        lastCommits[0] = commits[0].commit.message;
+                        lastCommits[1] = commits[1].commit.message;
+                        lastCommits[2] = commits[2].commit.message;
+                        lastCommits[3] = commits[3].commit.message;
+                        lastCommits[4] = commits[4].commit.message;
+
+                        Console.WriteLine("Github commits have been successfully stored!");
+                    }
+
+                }
+            }catch(Exception e)
+            {
+                Console.WriteLine("Failed to connect to Github API; !changelog will not work!\nError Code: {0}", e.ToString());
+            }
 
             isRunning = true;
 
@@ -212,7 +244,7 @@ namespace SteamBattleBot
             string[] args;
             if (callBack.EntryType == EChatEntryType.ChatMsg)
             {
-            if (callBack.Message.Length > 1 && callBack.Message.Remove(1) == "!")
+                if (callBack.Message.Length > 1 && callBack.Message.Remove(1) == "!")
                 {
                     string command = callBack.Message;
                     if (callBack.Message.Contains(" "))
@@ -392,7 +424,8 @@ namespace SteamBattleBot
                         #region !changelog
                         case "!changelog":
                             Log(string.Format("!changelog command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Changelog:\nAdded Changelog\nBalanced HP and Damage on Enemies\nAdded !block cmd for blocking attacks\nMinor Code fixes");
+                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg,
+                                string.Format("\nLast 5 commits from Github:\n\n{0}\n{1}\n{2}\n{3}\n{4}\n\nPlease check out the Github page\nhttps://github.com/nickthegamer5/SteamBattleBot", lastCommits[0], lastCommits[1], lastCommits[2], lastCommits[3], lastCommits[4]));
                             break;
                         #endregion
 

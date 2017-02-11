@@ -11,7 +11,7 @@ namespace SteamBattleBot
         static void Main(string[] args)
         {
             SteamDirectory.Initialize(); // Initialize the Steam Directory. Removing this will break the program.
-            steam.Log("|");
+            
             // Setup console display
             #region Console Display Setup
             Console.Title = "Steam Battle Bot";
