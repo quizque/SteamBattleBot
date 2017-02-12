@@ -1,6 +1,7 @@
 ﻿using System;
 using SteamKit2;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace SteamBattleBot
 {
@@ -25,35 +26,64 @@ namespace SteamBattleBot
             #endregion
 
             // Checking files and console input
-            #region Check for admin.txt
-            if (!File.Exists("admin.txt"))
+            #region Find and Create needed files
+            try
             {
-                File.Create("admin.txt").Close();
-                File.WriteAllText("admin.txt", "76561198116385237");
-            }
-            #endregion
+                #region Check for admin.txt
+                if (!File.Exists("admin.txt"))
+                {
+                    Console.WriteLine("admin.txt not found! Creating...");
+                    File.Create("admin.txt").Close();
+                    File.WriteAllText("admin.txt", "76561198116385237");
+                }
+                #endregion
 
-            #region Check for creds.txt
-            if (File.Exists("creds.txt"))
-            {
-                if (new FileInfo("creds.txt").Length != 0) {
-                    Console.WriteLine("Autologin file detected!");
-                    string[] lines = File.ReadAllLines("creds.txt");
-                    steam.user = lines[0];
-                    steam.pass = lines[1];
+                #region Check for players.json
+                if (!File.Exists("players.json") || new FileInfo("players.json").Length == 0)
+                {
+                    Console.WriteLine("players.json not found! Creating...");
+                    File.Create("players.json").Close();
+                    steam.players.Add(new Structures.PlayerStructure { id = 00000000000000000 });
+                    using (StreamWriter sw = new StreamWriter(@"players.json"))
+                        sw.Write(JsonConvert.SerializeObject(steam.players, Formatting.Indented));
+                }
+                #endregion
+
+                #region Check for creds.txt
+                if (File.Exists("creds.txt"))
+                {
+                    if (new FileInfo("creds.txt").Length != 0)
+                    {
+                        Console.WriteLine("Autologin file detected!");
+                        string[] lines = File.ReadAllLines("creds.txt");
+                        steam.user = lines[0];
+                        steam.pass = lines[1];
+                    }
+                    else
+                    {
+                        Console.WriteLine("creds.txt is empty! Exiting...");
+                        Console.ReadKey();
+                        Environment.Exit(0);
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("creds.txt is empty! Exiting...");
-                    Console.ReadKey();
-                    Environment.Exit(0);
+                    Console.Write("Username: ");
+                    steam.user = Console.ReadLine();
+                    Console.Write("Password: ");
+                    steam.pass = steam.InputPass();
                 }
-            }else
+                #endregion
+            }catch(FileLoadException e)
             {
-                Console.Write("Username: ");
-                steam.user = Console.ReadLine();
-                Console.Write("Password: ");
-                steam.pass = steam.InputPass();
+                Console.WriteLine("Error while trying to load the files!\n" + e.ToString());
+                Console.ReadKey();
+                Environment.Exit(0);
+            }catch(FileNotFoundException e)
+            {
+                Console.WriteLine("Error while trying to find the files!\n" + e.ToString());
+                Console.ReadKey();
+                Environment.Exit(0);
             }
             #endregion
 

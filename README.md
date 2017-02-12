@@ -32,6 +32,7 @@ Command | Action
 `!changename [name]` | Change the name of the bot (Admin only).
 `!debug [setting]` | Enable/Disable debug settings (Admin only).
 `!resetadmins` | Recheck admin.txt for new admins (Admin only).
+`!save` | Save all of the current players stats (Admin only).
 
 ### Features
 - Multi user support.

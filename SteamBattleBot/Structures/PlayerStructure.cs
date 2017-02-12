@@ -9,25 +9,27 @@ namespace SteamBattleBot.Structures
     class PlayerStructure
     {
         private Random _random = new Random();
-
-        private EnemyStructure enemy = new EnemyStructure();
+        
+        public EnemyStructure enemy = new EnemyStructure();
 
         public ulong id;
 
+        [Newtonsoft.Json.JsonIgnore]
         public bool shopMode = false;
 
-        private int hp,
-                    coins,
-                    hitChance,
+        private int hitChance,
                     damageDone,
-                    skillPoints,
-                    damageTaken,
-                    damageMultiplier,
-                    maxHp,
-                    level,
-                    exp,
-                    charge,
-                    cooldown;
+                    damageTaken;
+
+        public int hp,
+                   coins,
+                   skillPoints,
+                   damageMultiplier,
+                   maxHp,
+                   level,
+                   exp,
+                   charge,
+                   cooldown;
 
         public void SetupGame()
         {
@@ -41,7 +43,7 @@ namespace SteamBattleBot.Structures
             exp = 0;
         }
 
-        #region Attack and Check which monster to attack
+        // Attack and Check which monster to attack
         public void Attack(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
@@ -85,7 +87,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Bot")
                     {
@@ -116,7 +118,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Mod")
                     {
@@ -147,7 +149,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Admin")
                     {
@@ -178,7 +180,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else
                     {
@@ -187,9 +189,8 @@ namespace SteamBattleBot.Structures
                 }
             }
         }
-        #endregion
 
-        #region Block the attacks
+        // Block the attacks
         public void Block(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
@@ -228,7 +229,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Bot")
                     {
@@ -252,7 +253,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Mod")
                     {
@@ -276,7 +277,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Admin")
                     {
@@ -301,7 +302,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else
                     {
@@ -331,7 +332,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Bot")
                     {
@@ -351,7 +352,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Mod")
                     {
@@ -371,7 +372,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else if (enemy.type == "Steam Admin")
                     {
@@ -391,7 +392,7 @@ namespace SteamBattleBot.Structures
                         #endregion
 
                         HpCheck(callback, steamFriends);
-                        State(callback, steamFriends);
+                        Stats(callback, steamFriends, true);
                     }
                     else
                     {
@@ -401,9 +402,8 @@ namespace SteamBattleBot.Structures
                 #endregion
             }
         }
-        #endregion
 
-        #region Special attacks
+        // Special attack handling
         public void Special(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
@@ -456,7 +456,7 @@ namespace SteamBattleBot.Structures
                             #endregion
 
                             HpCheck(callback, steamFriends);
-                            State(callback, steamFriends);
+                            Stats(callback, steamFriends, true);
                         }
                         else if (enemy.type == "Steam Bot")
                         {
@@ -493,7 +493,7 @@ namespace SteamBattleBot.Structures
                             #endregion
 
                             HpCheck(callback, steamFriends);
-                            State(callback, steamFriends);
+                            Stats(callback, steamFriends, true);
                         }
                         else if (enemy.type == "Steam Mod")
                         {
@@ -530,7 +530,7 @@ namespace SteamBattleBot.Structures
                             #endregion
 
                             HpCheck(callback, steamFriends);
-                            State(callback, steamFriends);
+                            Stats(callback, steamFriends, true);
                         }
                         else if (enemy.type == "Steam Admin")
                         {
@@ -598,7 +598,7 @@ namespace SteamBattleBot.Structures
                                 #endregion
 
                                 HpCheck(callback, steamFriends);
-                                State(callback, steamFriends);
+                                Stats(callback, steamFriends, true);
                             }
                             else if (enemy.type == "Steam Bot")
                             {
@@ -621,7 +621,7 @@ namespace SteamBattleBot.Structures
                                 #endregion
 
                                 HpCheck(callback, steamFriends);
-                                State(callback, steamFriends);
+                                Stats(callback, steamFriends, true);
                             }
                             else if (enemy.type == "Steam Mod")
                             {
@@ -644,7 +644,7 @@ namespace SteamBattleBot.Structures
                                 #endregion
 
                                 HpCheck(callback, steamFriends);
-                                State(callback, steamFriends);
+                                Stats(callback, steamFriends, true);
                             }
                             else if (enemy.type == "Steam Admin")
                             {
@@ -667,7 +667,7 @@ namespace SteamBattleBot.Structures
                                 #endregion
 
                                 HpCheck(callback, steamFriends);
-                                State(callback, steamFriends);
+                                Stats(callback, steamFriends, true);
                             }
                             else
                             {
@@ -730,7 +730,7 @@ namespace SteamBattleBot.Structures
                                 #endregion
 
                                 HpCheck(callback, steamFriends);
-                                State(callback, steamFriends);
+                                Stats(callback, steamFriends, true);
                             }
                             else if (enemy.type == "Steam Bot")
                             {
@@ -783,7 +783,7 @@ namespace SteamBattleBot.Structures
                                 #endregion
 
                                 HpCheck(callback, steamFriends);
-                                State(callback, steamFriends);
+                                Stats(callback, steamFriends, true);
                             }
                             else if (enemy.type == "Steam Mod")
                             {
@@ -836,7 +836,7 @@ namespace SteamBattleBot.Structures
                                 #endregion
 
                                 HpCheck(callback, steamFriends);
-                                State(callback, steamFriends);
+                                Stats(callback, steamFriends, true);
                             }
                             else if (enemy.type == "Steam Admin")
                             {
@@ -898,51 +898,8 @@ namespace SteamBattleBot.Structures
                   }
                 }
             }
-            #endregion
 
-        #region Check the status of the enemy
-        public void State(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
-        {
-            if (enemy.type == "Steam Bot")
-            {
-                if (!shopMode)
-                { 
-                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} HP!", hp));
-                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Steam Bot have {0} HP!", enemy.hp));
-                }
-            }
-            else if (enemy.type == "Gaben Clone")
-            {
-                if (!shopMode)
-                {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} HP!", hp));
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Gaben Clone have {0} HP!", enemy.hp));
-                }
-            }
-            else if (enemy.type == "Steam Mod")
-            {
-                if (!shopMode)
-                {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} HP!", hp));
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Steam Mod have {0} HP!", enemy.hp));
-                }
-            }
-            else if (enemy.type == "Steam Admin")
-            {
-                if (!shopMode)
-                {
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You have {0} HP!", hp));
-                    steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Steam Admin have {0} HP!", enemy.hp));
-                }
-            }
-            else
-            {
-                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Something is wrong with the bot. Please contact the owner of the bot."));
-            }
-        } // Same as State?
-        #endregion
-
-        #region Check to see if the player can level up
+        // Check to see if the player can level up
         private void LevelUp(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (exp == 50)
@@ -954,15 +911,26 @@ namespace SteamBattleBot.Structures
                 exp = 0;
             }
         }
-        #endregion
 
-        public void Stats(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        public void Stats(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends, bool miniPrint = false)
         {
-            steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("\nCurrent Stats\nMax HP: {0}\nLevel: {1}\nXP: {2}\nCoins: {3}\nPoints: {4}\nDamage Increased: +{5}", maxHp, level, exp, coins, skillPoints, damageMultiplier));
+            if (miniPrint && !shopMode)
+                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, string.Format("\nYou have {0} HP!\nThe {1} has {2} HP!", hp, enemy.type, enemy.hp));
+            else
+                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, 
+                "\nCurrent Stats\n"+
+                  "Max HP: " +maxHp+"\n"+
+                  "Current HP: " +hp+ "\n" +
+                  "Level: " +level+ "\n" +
+                  "XP: " +exp+ "\n" +
+                  "Coins: " +coins+ "\n" +
+                  "Points: " +skillPoints+ "\n" +
+                  "Damage Increased: +" +damageMultiplier+ "\n" +
+                "\nEnemies Stats\n"+
+                  "HP: " +enemy.hp);
         }
 
-
-        #region Check if battle is won/game over.
+        // Check if battle is won/game over.
         private bool HpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (enemy.type == "Steam Bot")
@@ -1043,8 +1011,8 @@ namespace SteamBattleBot.Structures
             }
             return false;
         }
-        #endregion
 
+        // Show the shop menu
         public void DisplayShop(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (!shopMode)
@@ -1066,7 +1034,8 @@ namespace SteamBattleBot.Structures
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have exited the shop...");
             }
         }
-
+        
+        // Process item requests
         public void ProcessShop(string item, SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             switch (item)

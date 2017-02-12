@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace SteamBattleBot
 {
@@ -33,8 +34,10 @@ namespace SteamBattleBot
 
         Random _random = new Random();
 
-        List<Structures.PlayerStructure> players = new List<Structures.PlayerStructure>();
+        public List<Structures.PlayerStructure> players = new List<Structures.PlayerStructure>();
         List<ulong> admins = new List<ulong>();
+
+        JsonSerializer serializer = new JsonSerializer();
 
         public void SteamLogIn()
         {
@@ -57,6 +60,7 @@ namespace SteamBattleBot
 
             manager.Subscribe<SteamUser.UpdateMachineAuthCallback>(OnMachineAuth);
 
+            #region Get the last 5 Github commits
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -84,9 +88,30 @@ namespace SteamBattleBot
             {
                 Console.WriteLine("Failed to connect to Github API; !changelog will not work!\nError Code: {0}", e.ToString());
             }
+            #endregion
 
-            isRunning = true;
+            #region Open players.json and parse
+            try
+            {
+                Console.WriteLine("Parsing players.json...");
+                using (StreamReader file = File.OpenText(@"players.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    players = JsonConvert.DeserializeObject<List<Structures.PlayerStructure>>(file.ReadToEnd());
+                }
+            }catch(FileLoadException e)
+            {
+                Console.WriteLine("Faild to read players.json!\n" + e.ToString());
+            }catch (FileNotFoundException e)
+            {
+                Console.WriteLine("Faild to find players.json!\n" + e.ToString());
+            }catch (Exception e)
+            {
+                Console.WriteLine("An error occured while parsing players.json!\n" + e.ToString());
+            }
+            #endregion
 
+            #region Read admin.txt
             try
             {
                 lines = File.ReadAllLines("admin.txt"); // Read all the SteamID64s in the file
@@ -107,8 +132,9 @@ namespace SteamBattleBot
             {
                 Console.WriteLine(e.ToString());
             }
+            #endregion
 
-            players.Add(new Structures.PlayerStructure { id = 00000000000000000 });
+            isRunning = true;
 
             Console.WriteLine("Connecting to Steam...");
 
@@ -489,6 +515,28 @@ namespace SteamBattleBot
                             break;
                         #endregion
 
+                        #region !save (Admin only)
+                        case "!save":
+                            if (!IsBotAdmin(callBack.Sender))
+                                return;
+                            Log(string.Format("!save command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
+                            try
+                            {
+                                Console.WriteLine("Player data is being saved...");
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Saving player data...");
+                                using (StreamWriter sw = new StreamWriter(@"players.json"))
+                                    sw.Write(JsonConvert.SerializeObject(players, Formatting.Indented));
+                                Console.WriteLine("Player data has been saved successfully!");
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Player data has been saved successfully!");
+                            }
+                            catch(Exception e)
+                            {
+                                Console.WriteLine("Error while trying to save the player data!\n"+e.ToString());
+                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Error occured while trying to save the data! Please check the console for more info.");
+                            }
+                            break;
+                        #endregion
+
                         #region !help
                         case "!help":
                             Log(string.Format("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
@@ -505,7 +553,8 @@ namespace SteamBattleBot
                                 "!message [message] (admin only)\n" +
                                 "!changename [name] (admin only)\n" +
                                 "!debug [setting] (admin only)\n" +
-                                "!resetadmins (admin only)");
+                                "!resetadmins (admin only)" +
+                                "!save (admin only)");
                             break;
                         #endregion
                     }
@@ -622,9 +671,9 @@ namespace SteamBattleBot
             }
         }
 
-        public void Log(string command)
+        public void Log(string command, bool force = false)
         {
-            if (logCommands)
+            if (logCommands || force)
                 Console.WriteLine(DateTime.Now.ToString("[hh:mm:ss] ") + command);
         }
     }
