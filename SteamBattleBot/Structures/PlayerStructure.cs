@@ -723,12 +723,12 @@ namespace SteamBattleBot.Structures
         // Check to see if the player can level up
         private void LevelUp(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
-            if (exp == 50)
+            if (exp == 10)
             {
                 level += 1;
                 coins += 15;
-                skillPoints += 5;
-                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Congrats, you are level {0} and earned 15 coins and 5 points!", level));
+                skillPoints += 3;
+                steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("Congrats, you are level {0} and earned 15 coins and 3 points!", level));
                 exp = 0;
             }
         }
