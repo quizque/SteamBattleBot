@@ -13,6 +13,9 @@ namespace SteamBattleBot.Structures
 
         public string type;
 
+        /// <summary>
+        /// Reset enemy's stats.
+        /// </summary>
         public void Reset()
         {
             coins = _random.Next(2, 5);

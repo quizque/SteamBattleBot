@@ -31,6 +31,8 @@ namespace SteamBattleBot.Structures
                    charge,
                    cooldown;
 
+        // NOTE: Need to move attack testing into Enemy Structure
+
         public void SetupGame()
         {
             enemy.Reset();
@@ -43,7 +45,11 @@ namespace SteamBattleBot.Structures
             exp = 0;
         }
 
-        // Attack and Check which monster to attack
+        /// <summary>
+        /// Attack and check HP.
+        /// </summary>
+        /// <param name="callback">Friend message callback.</param>
+        /// <param name="steamFriends">Steam friends handel.</param>
         public void Attack(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
@@ -182,7 +188,11 @@ namespace SteamBattleBot.Structures
             }
         }
 
-        // Block the attacks
+        /// <summary>
+        /// Block the attack.
+        /// </summary>
+        /// <param name="callback">Friend message callback.</param>
+        /// <param name="steamFriends">Steam friends handel.</param>
         public void Block(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
@@ -387,7 +397,11 @@ namespace SteamBattleBot.Structures
             }
         }
 
-        // Special attack handling
+        /// <summary>
+        /// Charge/Use special attack.
+        /// </summary>
+        /// <param name="callback">Friend message callback.</param>
+        /// <param name="steamFriends">Steam friends handel.</param>
         public void Special(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (shopMode == true)
@@ -718,9 +732,13 @@ namespace SteamBattleBot.Structures
                 
             }
             #endregion
-        }
+        } // Need to clean up.
 
-        // Check to see if the player can level up
+        /// <summary>
+        /// Test too see if user can level up.
+        /// </summary>
+        /// <param name="callback">Friend message callback.</param>
+        /// <param name="steamFriends">Steam friends handel.</param>
         private void LevelUp(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (exp == 10)
@@ -751,15 +769,19 @@ namespace SteamBattleBot.Structures
                   "HP: " +enemy.hp);
         }
 
-        // Check if battle is won/game over.
-        private bool HpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
+        /// <summary>
+        /// Test and handel if user lost/won battle.
+        /// </summary>
+        /// <param name="callback">Friend message callback.</param>
+        /// <param name="steamFriends">Steam friends handel.</param>
+        private void HpCheck(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             switch (enemy.type) {
                 case "Steam Bot":
                     if (hp <= 0)
                     {
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Bot stolen your account! Type !restart to start a new game.");
-                        return true;
+                        return;
                     }
                     else if (enemy.hp <= 0)
                     {
@@ -769,14 +791,14 @@ namespace SteamBattleBot.Structures
                         hp += _random.Next(1, 6);
                         enemy.Reset();
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You are facing a {0}!", enemy.type));
-                        return true;
+                        return;
                     }
                     break;
                 case "Gaben Clone":
                     if (hp <= 0)
                     {
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Gaben Clone banned you from Steam! Type !restart to start a new game.");
-                        return true;
+                        return;
                     }
                     else if (enemy.hp <= 0)
                     {
@@ -786,14 +808,14 @@ namespace SteamBattleBot.Structures
                         hp += _random.Next(1, 6);
                         enemy.Reset();
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You are facing a {0}!", enemy.type));
-                        return true;
+                        return;
                     }
                     break;
                 case "Steam Mod":
                     if (hp <= 0)
                     {
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Mod banned you from Steam Forums! Type !restart to start a new game.");
-                        return true;
+                        return;
                     }
                     else if (enemy.hp <= 0)
                     {
@@ -803,14 +825,14 @@ namespace SteamBattleBot.Structures
                         hp += _random.Next(1, 6);
                         enemy.Reset();
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You are facing a {0}!", enemy.type));
-                        return true;
+                        return;
                     }
                     break;
                 case "Steam Admin":
                     if (hp <= 0)
                     {
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "The Steam Admin banned you from trading! RIP Skins! Type !restart to start a new game.");
-                        return true;
+                        return;
                     }
                     else if (enemy.hp <= 0)
                     {
@@ -820,14 +842,18 @@ namespace SteamBattleBot.Structures
                         hp += _random.Next(1, 6);
                         enemy.Reset();
                         steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, String.Format("You are facing a {0}!", enemy.type));
-                        return true;
+                        return;
                     }
                     break;
             }
-            return false;
+            return;
         }
 
-        // Show the shop menu
+        /// <summary>
+        /// Display shop menu.
+        /// </summary>
+        /// <param name="callback">Friend message callback.</param>
+        /// <param name="steamFriends">Steam friends handel.</param>
         public void DisplayShop(SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             if (!shopMode)
@@ -848,8 +874,13 @@ namespace SteamBattleBot.Structures
                 steamFriends.SendChatMessage(callback.Sender, EChatEntryType.ChatMsg, "You have exited the shop...");
             }
         }
-        
-        // Process item requests
+
+        /// <summary>
+        /// Process user item requests.
+        /// </summary>
+        /// <param name="item">Int of item wanting to be processed.</param>
+        /// <param name="callback">Friend message callback.</param>
+        /// <param name="steamFriends">Steam friends handel.</param>
         public void ProcessShop(string item, SteamFriends.FriendMsgCallback callback, SteamFriends steamFriends)
         {
             switch (item)
