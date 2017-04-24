@@ -29,6 +29,7 @@ namespace SteamBattleBot
         byte[] sentryHash;
 
         int playerCount = 0;
+        Structures.PlayerStructure selectedPlayer;
 
         string[] lastCommits = new string[5];
 
@@ -175,7 +176,7 @@ namespace SteamBattleBot
             });
         }
 
-        void OnDisconnected(SteamClient.DisconnectedCallback callback)
+        void OnDisconnected(SteamClient.DisconnectedCallback callBack)
         {
             Console.WriteLine("{0} disconnected from Steam, reconnecting in 5...", user);
 
@@ -282,7 +283,15 @@ namespace SteamBattleBot
                     // args = seperate((amount of args it should have. example: 1), ' ', callBack.Message);
                     // It will return a list of the args; 0 being the command and 1, 2, etc being the args
                     // If their is no args found it will return -1 in slot [0] so make sure to use an if
-                    //  statement to check if their is more then one arg if your command uses it
+                    // statement to check if their is more then one arg if your command uses it
+
+                    foreach (Structures.PlayerStructure player in players) // Loop the list 
+                    {
+                        if (player.id == callBack.Sender.AccountID)
+                        {
+                            selectedPlayer = player;
+                        }
+                    }
 
                     switch (command)
                     {
@@ -347,7 +356,7 @@ namespace SteamBattleBot
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Command syntax: !debug (setting)");
                                 return;
                             }
-                            
+
 
                             if (args[1] == "logcommands")
                             {
@@ -357,127 +366,6 @@ namespace SteamBattleBot
 
                             Log(string.Format("!log {0} command recived. User: {1}", args[1], steamFriends.GetFriendPersonaName(callBack.Sender)));
 
-                            break;
-                        #endregion
-
-                        #region !setup
-                        case "!setup":
-                            playerCount = players.Count;
-                            for (var i = 0; i < playerCount; i++) {
-
-                                if (players[i].id == callBack.Sender.AccountID)
-                                {
-                                    Console.WriteLine("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender));
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "You are already setup! Type !restart to restart your game.");
-                                    return;
-                                }
-                            }
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Setting up user...");
-                            Log(string.Format("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-
-                            players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
-
-                            for (var i = 0; i < players.Count; i++)
-                            {
-                                if (callBack.Sender.AccountID == players[i].id)
-                                {
-                                    players[i].SetupGame();
-                                }
-                            }
-
-                            break;
-
-                        #endregion
-
-                        #region !restart
-                        case "!restart":
-                            playerCount = players.Count;
-                            for (var i = 0; i < playerCount; i++)
-                            {
-
-                                if (players[i].id == callBack.Sender.AccountID)
-                                {
-                                    Log(string.Format("!restart command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                                    steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Restarting game...");
-                                    players[i].SetupGame();
-                                    return;
-                                }
-                            }
-
-                            break;
-
-                        #endregion
-                       
-                        #region !attack
-                        case "!attack":
-                            foreach (Structures.PlayerStructure player in players) // Loop the list
-                            {
-                                if (player.id == callBack.Sender.AccountID)
-                                {
-                                    Log(string.Format("!attack command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                                    player.Attack(callBack, steamFriends);
-                                }
-                            }
-                            break;
-                        #endregion
-
-                        #region !special
-                        case "!special":
-                            foreach (Structures.PlayerStructure player in players) // Loop the list
-                            {
-                                if (player.id == callBack.Sender.AccountID)
-                                {
-                                    Log(string.Format("!special command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                                    player.Special(callBack, steamFriends);
-                                }
-                            }
-                            break;
-                        #endregion
-
-                        #region !block
-                        case "!block":
-                            foreach (Structures.PlayerStructure player in players) // Loop the list
-                            {
-                                if (player.id == callBack.Sender.AccountID)
-                                {
-                                    Log(string.Format("!block command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                                    player.Block(callBack, steamFriends);
-                                }
-                            }
-                            break;
-                        #endregion
-
-                        #region !changelog
-                        case "!changelog":
-                            Log(string.Format("!changelog command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg,
-                                string.Format("\nLast 5 commits from Github:\n\n{0}\n{1}\n{2}\n{3}\n{4}\n\nPlease check out the Github page\nhttps://github.com/nickthegamer5/SteamBattleBot", lastCommits[0], lastCommits[1], lastCommits[2], lastCommits[3], lastCommits[4]));
-                            break;
-                        #endregion
-
-                        #region !shop
-                        case "!shop":
-                            foreach (Structures.PlayerStructure player in players) // Loop the list
-                            {
-                                if (player.id == callBack.Sender.AccountID)
-                                {
-                                    Log(string.Format("!shop command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                                    player.DisplayShop(callBack, steamFriends);
-                                }
-                            }
-                            break;
-                        #endregion
-
-                        #region !stats
-                        case "!stats":
-                            foreach (Structures.PlayerStructure player in players) // Loop the list
-                            {
-                                if (player.id == callBack.Sender.AccountID)
-                                {
-                                    Log(string.Format("!stats command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                                    player.Stats(callBack, steamFriends);
-                                }
-                            }
                             break;
                         #endregion
 
@@ -529,27 +417,54 @@ namespace SteamBattleBot
                                 Console.WriteLine("Player data has been saved successfully!");
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Player data has been saved successfully!");
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
-                                Console.WriteLine("Error while trying to save the player data!\n"+e.ToString());
+                                Console.WriteLine("Error while trying to save the player data!\n" + e.ToString());
                                 steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Error occured while trying to save the data! Please check the console for more info.");
                             }
+                            break;
+                        #endregion
+
+                        #region !setup
+                        case "!setup":
+                            playerCount = players.Count;
+                            if (IsAlreadyPlayer(callBack))
+                            {
+                                Log(string.Format("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
+                                SendUserMessage(callBack, "You are already setup! Type !restart to restart your game.");
+                                return;
+                            }
+                            SendUserMessage(callBack, "Setting up user...");
+                            Log(string.Format("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
+
+                            players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
+
+                            selectedPlayer.HandleMessage(callBack, steamFriends, command);
+
+                            break;
+
+                        #endregion
+
+                        #region !changelog
+                        case "!changelog":
+                            Log(string.Format("!changelog command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
+                            SendUserMessage(callBack, string.Format("\nLast 5 commits from Github:\n\n{0}\n{1}\n{2}\n{3}\n{4}\n\nPlease check out the Github page\nhttps://github.com/nickthegamer5/SteamBattleBot", lastCommits[0], lastCommits[1], lastCommits[2], lastCommits[3], lastCommits[4]));
                             break;
                         #endregion
 
                         #region !help
                         case "!help":
                             Log(string.Format("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, 
-                                "\nThe current commands are:\n"+
-                                "!help\n"+
-                                "!attack\n"+
-                                "!block\n"+
-                                "!setup\n"+
-                                "!stats\n"+
-                                "!shop\n"+
-                                "!changelog\n"+
-                                "!shutdown (admin only)\n"+
+                            SendUserMessage(callBack,
+                                "\nThe current commands are:\n" +
+                                "!help\n" +
+                                "!attack\n" +
+                                "!block\n" +
+                                "!setup\n" +
+                                "!stats\n" +
+                                "!shop\n" +
+                                "!changelog\n" +
+                                "!shutdown (admin only)\n" +
                                 "!message [message] (admin only)\n" +
                                 "!changename [name] (admin only)\n" +
                                 "!debug [setting] (admin only)\n" +
@@ -557,6 +472,11 @@ namespace SteamBattleBot
                                 "!save (admin only)");
                             break;
                         #endregion
+
+                        default:
+                            selectedPlayer.HandleMessage(callBack, steamFriends, command);
+                            break;
+
                     }
                 }
                 foreach (Structures.PlayerStructure player in players) // Loop the list
@@ -567,6 +487,23 @@ namespace SteamBattleBot
                     }
                 }
             }
+        }
+
+        void SendUserMessage(SteamFriends.FriendMsgCallback callBack, string message)
+        {
+            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, message);
+        }
+
+        bool IsAlreadyPlayer(SteamFriends.FriendMsgCallback callBack)
+        {
+            foreach (Structures.PlayerStructure player in players)
+            {
+                if (player.id == callBack.Sender.AccountID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         bool IsBotAdmin(SteamID sid, bool refresh = false)
@@ -583,9 +520,9 @@ namespace SteamBattleBot
             // And put the message in console
             Log(string.Format("{0} attempted to use an administrator command while not an administrator.", steamFriends.GetFriendPersonaName(sid)));
             return false;
-        }
+        } // FIX THE SEND THING!!!!
 
-        void OnFriendsAdded(SteamFriends.FriendsListCallback callBack)
+        void OnFriendsAdded(SteamFriends.FriendsListCallback callBack)// FIX THE SEND THING TOO!!!!!
         {
             Thread.Sleep(2500);
 
