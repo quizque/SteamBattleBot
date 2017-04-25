@@ -299,7 +299,7 @@ namespace SteamBattleBot
                         case "!shutdown":
                             if (!IsBotAdmin(callBack.Sender))
                             {
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
+                                SendUserMessage(callBack.Sender, "Only admins can use the !shutdown command!");
                                 break;
                             }
                             Environment.Exit(0);
@@ -310,13 +310,13 @@ namespace SteamBattleBot
                         case "!resetadmins":
                             if (!IsBotAdmin(callBack.Sender))
                             {
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !resetadmins command!");
+                                SendUserMessage(callBack.Sender, "Only admins can use the !resetadmins command!");
                                 break;
                             }
                             try
                             {
                                 Log(string.Format("!resetadmins command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Rechecking admin.txt...");
+                                SendUserMessage(callBack.Sender, "Rechecking admin.txt...");
 
                                 lines = File.ReadAllLines("admin.txt"); // Read all the SteamID64s in the file
                                 admins.Clear(); // Clear the list to store the new admins
@@ -333,11 +333,11 @@ namespace SteamBattleBot
                                         Console.WriteLine("WARNING: {0} is an invalid steamID16 in admin.txt! Skipping..."); // Tell the user
                                     }
                                 }
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Done!");
+                                SendUserMessage(callBack.Sender, "Done!");
                             } catch (Exception e)
                             {
                                 Console.WriteLine("Error while checking admin.txt: {0}", e.ToString());
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, string.Format("Error while checking admin.txt: {0}", e.ToString()));
+                                SendUserMessage(callBack.Sender, string.Format("Error while checking admin.txt: {0}", e.ToString()));
                             }
 
                             break;
@@ -347,13 +347,13 @@ namespace SteamBattleBot
                         case "!debug":
                             if (!IsBotAdmin(callBack.Sender))
                             {
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Only admins can use the !shutdown command!");
+                                SendUserMessage(callBack.Sender, "Only admins can use the !shutdown command!");
                                 break;
                             }
                             args = Seperate(1, ' ', callBack.Message);
                             if (args[0] == "-1")
                             {
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Command syntax: !debug (setting)");
+                                SendUserMessage(callBack.Sender, "Command syntax: !debug (setting)");
                                 return;
                             }
 
@@ -361,7 +361,7 @@ namespace SteamBattleBot
                             if (args[1] == "logcommands")
                             {
                                 logCommands = !logCommands;
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, string.Format("Debug mode logchat: {0}", logCommands ? "Enabled" : "Disabled"));
+                                SendUserMessage(callBack.Sender, string.Format("Debug mode logchat: {0}", logCommands ? "Enabled" : "Disabled"));
                             }
 
                             Log(string.Format("!log {0} command recived. User: {1}", args[1], steamFriends.GetFriendPersonaName(callBack.Sender)));
@@ -376,14 +376,14 @@ namespace SteamBattleBot
                             args = Seperate(1, ' ', callBack.Message);
                             if (args[0] == "-1")
                             {
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Command syntax: !message (message)");
+                                SendUserMessage(callBack.Sender, "Command syntax: !message (message)");
                                 return;
                             }
                             Log("!message command recived. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
                             for (int i = 0; i < steamFriends.GetFriendCount(); i++)
                             {
                                 SteamID friend = steamFriends.GetFriendByIndex(i);
-                                steamFriends.SendChatMessage(friend, EChatEntryType.ChatMsg, args[1]);
+                                SendUserMessage(friend, args[1]);
                             }
                             break;
                         #endregion
@@ -396,7 +396,7 @@ namespace SteamBattleBot
                             Log("!changename " + args[1] + " command recieved. User: " + steamFriends.GetFriendPersonaName(callBack.Sender));
                             if (args[0] == "-1")
                             {
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Syntax: !changename [name]");
+                                SendUserMessage(callBack.Sender, "Syntax: !changename [name]");
                                 return;
                             }
                             steamFriends.SetPersonaName(args[1]);
@@ -411,16 +411,16 @@ namespace SteamBattleBot
                             try
                             {
                                 Console.WriteLine("Player data is being saved...");
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Saving player data...");
+                                SendUserMessage(callBack.Sender, "Saving player data...");
                                 using (StreamWriter sw = new StreamWriter(@"players.json"))
                                     sw.Write(JsonConvert.SerializeObject(players, Formatting.Indented));
                                 Console.WriteLine("Player data has been saved successfully!");
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Player data has been saved successfully!");
+                                SendUserMessage(callBack.Sender, "Player data has been saved successfully!");
                             }
                             catch (Exception e)
                             {
                                 Console.WriteLine("Error while trying to save the player data!\n" + e.ToString());
-                                steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, "Error occured while trying to save the data! Please check the console for more info.");
+                                SendUserMessage(callBack.Sender, "Error occured while trying to save the data! Please check the console for more info.");
                             }
                             break;
                         #endregion
@@ -431,10 +431,10 @@ namespace SteamBattleBot
                             if (IsAlreadyPlayer(callBack))
                             {
                                 Log(string.Format("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                                SendUserMessage(callBack, "You are already setup! Type !restart to restart your game.");
+                                SendUserMessage(callBack.Sender, "You are already setup! Type !restart to restart your game.");
                                 return;
                             }
-                            SendUserMessage(callBack, "Setting up user...");
+                            SendUserMessage(callBack.Sender, "Setting up user...");
                             Log(string.Format("!setup command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
 
                             players.Add(new Structures.PlayerStructure { id = callBack.Sender.AccountID });
@@ -448,14 +448,14 @@ namespace SteamBattleBot
                         #region !changelog
                         case "!changelog":
                             Log(string.Format("!changelog command recived. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                            SendUserMessage(callBack, string.Format("\nLast 5 commits from Github:\n\n{0}\n{1}\n{2}\n{3}\n{4}\n\nPlease check out the Github page\nhttps://github.com/nickthegamer5/SteamBattleBot", lastCommits[0], lastCommits[1], lastCommits[2], lastCommits[3], lastCommits[4]));
+                            SendUserMessage(callBack.Sender, string.Format("\nLast 5 commits from Github:\n\n{0}\n{1}\n{2}\n{3}\n{4}\n\nPlease check out the Github page\nhttps://github.com/nickthegamer5/SteamBattleBot", lastCommits[0], lastCommits[1], lastCommits[2], lastCommits[3], lastCommits[4]));
                             break;
                         #endregion
 
                         #region !help
                         case "!help":
                             Log(string.Format("!help command revied. User: {0}", steamFriends.GetFriendPersonaName(callBack.Sender)));
-                            SendUserMessage(callBack,
+                            SendUserMessage(callBack.Sender,
                                 "\nThe current commands are:\n" +
                                 "!help\n" +
                                 "!attack\n" +
@@ -489,9 +489,9 @@ namespace SteamBattleBot
             }
         }
 
-        void SendUserMessage(SteamFriends.FriendMsgCallback callBack, string message)
+        void SendUserMessage(SteamID callBack, string message)
         {
-            steamFriends.SendChatMessage(callBack.Sender, EChatEntryType.ChatMsg, message);
+            steamFriends.SendChatMessage(callBack, EChatEntryType.ChatMsg, message);
         }
 
         bool IsAlreadyPlayer(SteamFriends.FriendMsgCallback callBack)
@@ -516,13 +516,13 @@ namespace SteamBattleBot
                 }
             }
             // If their ID was not found, tell the user
-            steamFriends.SendChatMessage(sid, EChatEntryType.ChatMsg, "You are not a bot admin.");
+            SendUserMessage(sid, "You are not a bot admin.");
             // And put the message in console
             Log(string.Format("{0} attempted to use an administrator command while not an administrator.", steamFriends.GetFriendPersonaName(sid)));
             return false;
-        } // FIX THE SEND THING!!!!
+        }
 
-        void OnFriendsAdded(SteamFriends.FriendsListCallback callBack)// FIX THE SEND THING TOO!!!!!
+        void OnFriendsAdded(SteamFriends.FriendsListCallback callBack)
         {
             Thread.Sleep(2500);
 
@@ -532,8 +532,8 @@ namespace SteamBattleBot
                 {
                     steamFriends.AddFriend(friend.SteamID);
                     Thread.Sleep(2000);
-                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Hello, I am the STEAM Battle Bot. Type !setup to start the battle!");
-                    steamFriends.SendChatMessage(friend.SteamID, EChatEntryType.ChatMsg, "Type !help for commands related to the bot!");
+                    SendUserMessage(friend.SteamID, "Hello, I am the STEAM Battle Bot. Type !setup to start the battle!");
+                    SendUserMessage(friend.SteamID, "Type !help for commands related to the bot!");
                 }
             }
         }
