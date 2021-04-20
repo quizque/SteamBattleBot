@@ -1,3 +1,6 @@
+# This has been archived
+### I plan to revisit this some time as probably a Rust project, but for now, this will be archived.
+
 ## SteamBattleBot
 Steam chat game bot used to pass time
 
